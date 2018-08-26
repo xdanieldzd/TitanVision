@@ -67,10 +67,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="TitanMessage, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\TitanMessage\TitanMessage\bin\Release\TitanMessage.exe</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BCFNTReader.cs" />
@@ -93,6 +89,7 @@
     </Compile>
     <Compile Include="GameRenderer.cs" />
     <Compile Include="TextureHelper.cs" />
+    <Compile Include="Translation.cs" />
     <Compile Include="TreeViewEx.cs">
       <SubType>Component</SubType>
     </Compile>

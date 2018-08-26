@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using TitanMessage;
-
 namespace TitanVision
 {
 	public partial class TextEditorControl : UserControl

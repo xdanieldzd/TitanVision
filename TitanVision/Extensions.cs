@@ -7,6 +7,8 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Reflection;
 
+using Newtonsoft.Json;
+
 namespace TitanVision
 {
 	public static class Extensions
@@ -25,6 +27,22 @@ namespace TitanVision
 		public static T GetAttribute<T>(this ICustomAttributeProvider assembly, bool inherit = false) where T : Attribute
 		{
 			return assembly.GetCustomAttributes(typeof(T), inherit).OfType<T>().FirstOrDefault();
+		}
+
+		public static void SerializeToFile(this object obj, string jsonFileName)
+		{
+			using (var writer = new StreamWriter(jsonFileName))
+			{
+				writer.Write(JsonConvert.SerializeObject(obj, Formatting.Indented));
+			}
+		}
+
+		public static T DeserializeFromFile<T>(this string jsonFileName)
+		{
+			using (var reader = new StreamReader(jsonFileName))
+			{
+				return (T)JsonConvert.DeserializeObject(reader.ReadToEnd(), typeof(T), new JsonSerializerSettings() { Formatting = Formatting.Indented });
+			}
 		}
 	}
 }
