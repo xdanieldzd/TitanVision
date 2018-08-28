@@ -170,6 +170,8 @@ namespace TitanVision
 				}
 			}
 
+			croppedHeight = Math.Max(cellSize.Height, croppedHeight);
+
 			Marshal.Copy(pixelData, 0, bmpData.Scan0, pixelData.Length);
 			image.UnlockBits(bmpData);
 
