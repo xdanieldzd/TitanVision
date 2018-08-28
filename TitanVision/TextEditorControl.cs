@@ -40,6 +40,8 @@ namespace TitanVision
 			}
 		}
 
+		public bool OverridesEnabled { get; set; }
+
 		public TextEditorControl()
 		{
 			InitializeComponent();
@@ -53,11 +55,11 @@ namespace TitanVision
 			if (GameRenderer == null || TranslatableEntry == null) return;
 
 			var oldOriginalImage = pbOriginal.Image;
-			pbOriginal.Image = GameRenderer.GetBitmap(TranslatableEntry.Original);
+			pbOriginal.Image = GameRenderer.GetBitmap(TranslatableEntry.Original, OverridesEnabled);
 			oldOriginalImage?.Dispose();
 
 			var oldTranslationImage = pbTranslation.Image;
-			pbTranslation.Image = GameRenderer.GetBitmap(TranslatableEntry.Translation);
+			pbTranslation.Image = GameRenderer.GetBitmap(TranslatableEntry.Translation, OverridesEnabled);
 			oldTranslationImage?.Dispose();
 		}
 	}

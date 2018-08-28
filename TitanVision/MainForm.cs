@@ -44,6 +44,11 @@ namespace TitanVision
 
 			dataLoaded = false;
 
+			enableCharacterOverridesToolStripMenuItem.CheckedChanged += (s, e) =>
+			{
+				textEditorControl.ForceRedrawPreviews();
+			};
+
 			cmbMessage.SelectedIndexChanged += (s, e) =>
 			{
 				if (cmbMessage.SelectedItem != null)
@@ -100,6 +105,11 @@ namespace TitanVision
 			}
 
 			renderers = config.FontPaths.Where(x => File.Exists(x)).Select(x => new GameRenderer(x)).ToArray();
+			foreach (var renderer in renderers)
+				foreach (var charaOverride in config.CharacterOverrides)
+					renderer.SetCharacterOverride(charaOverride.Key, charaOverride.Value);
+
+			enableCharacterOverridesToolStripMenuItem.DataBindings.Add(nameof(enableCharacterOverridesToolStripMenuItem.Checked), config, nameof(config.OverridesEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
 		private void UpdateTextEditor()
@@ -107,6 +117,7 @@ namespace TitanVision
 			textEditorControl.DataBindings.Clear();
 			textEditorControl.DataBindings.Add(nameof(textEditorControl.TranslatableEntry), cmbMessage, nameof(cmbMessage.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
 			textEditorControl.DataBindings.Add(nameof(textEditorControl.GameRenderer), cmbFont, nameof(cmbFont.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
+			textEditorControl.DataBindings.Add(nameof(textEditorControl.OverridesEnabled), config, nameof(config.OverridesEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
 			textEditorControl.ForceRedrawPreviews();
 		}
 
@@ -186,7 +197,7 @@ namespace TitanVision
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Application.Exit();
+			Close();
 		}
 
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

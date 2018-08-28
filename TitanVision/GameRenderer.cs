@@ -41,6 +41,9 @@ namespace TitanVision
 		};
 		readonly static Dictionary<char, char> asciiToShiftJis = shiftJisToAscii.ToDictionary(x => x.Value, x => x.Key);
 
+		readonly static Dictionary<char, char> shiftJisCharacterOverrides = new Dictionary<char, char>();
+		static Dictionary<char, char> asciiCharacterOverrides { get => shiftJisCharacterOverrides.ToDictionary(x => x.Value, y => y.Key); }
+
 		readonly static Dictionary<string, Func<string, string>> preProcessFunctions = new Dictionary<string, Func<string, string>>()
 		{
 			{ "Enemy1", PreProcessEnemy },
@@ -108,6 +111,16 @@ namespace TitanVision
 			preProcessSubstitutionList[code] = strings;
 		}
 
+		public void SetCharacterOverride(char sjis, char ascii)
+		{
+			shiftJisCharacterOverrides[sjis] = ascii;
+		}
+
+		public void RemoveCharacterOverride(char sjis)
+		{
+			shiftJisCharacterOverrides.Remove(sjis);
+		}
+
 		private static void ResetRenderMisc()
 		{
 			imageAttributes = new ImageAttributes();
@@ -122,7 +135,7 @@ namespace TitanVision
 			imageAttributes.SetColorMatrix(new ColorMatrix(colorMatrix), ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 		}
 
-		public Bitmap GetBitmap(string str)
+		public Bitmap GetBitmap(string str, bool enableOverrides = false)
 		{
 			if (str == null || str.Length == 0)
 				return new Bitmap(32, 32, PixelFormat.Format32bppArgb);
@@ -130,7 +143,7 @@ namespace TitanVision
 			var image = new Bitmap(2048, Math.Max(1, (str.Length - str.Replace(Environment.NewLine, "").Length)) * cellSize.Height, PixelFormat.Format32bppArgb);
 			using (Graphics g = Graphics.FromImage(image))
 			{
-				DrawString(g, str);
+				DrawString(g, str, enableOverrides);
 			}
 
 			// TODO: maybe make less inefficient, I guess? tho it works so, eh, dunno
@@ -186,7 +199,7 @@ namespace TitanVision
 
 		// this function is voodoo and I don't mean 3dfx
 
-		public void DrawString(Graphics g, string str)
+		public void DrawString(Graphics g, string str, bool enableOverrides = false)
 		{
 			ResetRenderMisc();
 
@@ -235,11 +248,17 @@ namespace TitanVision
 					continue;
 				}
 
-				var chr = Encoding.GetEncoding(932).GetBytes(new char[] { (asciiToShiftJis.ContainsKey(chrAscii) ? asciiToShiftJis[chrAscii] : chrAscii) });
-				if (chr.Length != 2) chr = new byte[] { 0x81, 0x48 };
-				if (chr[0] == 0x81 && chr[1] == 0x40) { chr[0] = 0x00; chr[1] = 0x20; }
+				char chr = chrAscii;
+				if (enableOverrides && asciiCharacterOverrides.ContainsKey(chr))
+					chr = asciiCharacterOverrides[chr];
+				else if (asciiToShiftJis.ContainsKey(chr))
+					chr = asciiToShiftJis[chr];
 
-				var chrCode = (ushort)(chr[0] << 8 | chr[1]);
+				var chrBytes = Encoding.GetEncoding(932).GetBytes(new char[] { chr });
+				if (chrBytes.Length != 2) chrBytes = new byte[] { 0x81, 0x48 };
+				if (chrBytes[0] == 0x81 && chrBytes[1] == 0x40) { chrBytes[0] = 0x00; chrBytes[1] = 0x20; }
+
+				var chrCode = (ushort)(chrBytes[0] << 8 | chrBytes[1]);
 				var chrInfo = charMap[chrCode];
 
 				xPos += chrInfo.Left;
