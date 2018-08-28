@@ -209,6 +209,15 @@ namespace TitanVision
 			GUIHelper.ShowInformationMessage("About", $"About {Application.ProductName}", $"{Application.ProductName} v{version.Major}.{version.Minor} - {description}\n\n{copyright.Replace(" - ", Environment.NewLine)}");
 		}
 
+		private void characterOverridesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var characterOverrideForm = new CharacterOverrideForm();
+			characterOverrideForm.InitializeDictionaryEditor(config.CharacterOverrides);
+			characterOverrideForm.ShowDialog();
+
+			textEditorControl.ForceRedrawPreviews();
+		}
+
 		private void MainForm_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			cmbMessage.Invalidate();
