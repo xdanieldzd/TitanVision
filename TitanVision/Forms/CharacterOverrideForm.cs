@@ -17,13 +17,10 @@ namespace TitanVision.Forms
 		Dictionary<char, char> sourceDictionary;
 		BindingList<CharPair> pairs;
 
-		public CharacterOverrideForm()
+		public CharacterOverrideForm(Dictionary<char, char> dictionary)
 		{
 			InitializeComponent();
-		}
 
-		public void InitializeDictionaryEditor(Dictionary<char, char> dictionary)
-		{
 			sourceDictionary = dictionary;
 
 			pairs = new BindingList<CharPair>();

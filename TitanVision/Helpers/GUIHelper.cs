@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using Microsoft.WindowsAPICodePack.Dialogs;
 
@@ -189,6 +190,53 @@ namespace TitanVision.Helpers
 				};
 				selectedPath = fbd.SelectedPath;
 				return fbd.ShowDialog();
+			}
+		}
+
+		public static DialogResult ShowFileOpenDialog(string title, string initialPath, string[] filters, out string selectedPath)
+		{
+			var initialDirectory = ((initialPath != null && initialPath != string.Empty) ? Path.GetDirectoryName(initialPath) : string.Empty);
+			var initialFileName = ((initialPath != null && initialPath != string.Empty) ? Path.GetFileName(initialPath) : string.Empty);
+
+			if (CommonFileDialog.IsPlatformSupported)
+			{
+				CommonFileDialog ofd = new CommonOpenFileDialog
+				{
+					InitialDirectory = initialDirectory,
+					DefaultFileName = initialFileName,
+					Title = title,
+				};
+
+				foreach (string filter in filters)
+				{
+					string[] components = filter.Split('|');
+					if (components.Length == 2)
+						ofd.Filters.Add(new CommonFileDialogFilter(components[0], components[1]) { ShowExtensions = true });
+				}
+
+				if (ofd.ShowDialog() == CommonFileDialogResult.Ok)
+				{
+					selectedPath = ofd.FileName;
+					return DialogResult.OK;
+				}
+				else
+				{
+					selectedPath = string.Empty;
+					return DialogResult.Cancel;
+				}
+			}
+			else
+			{
+				OpenFileDialog ofd = new OpenFileDialog()
+				{
+					Title = title,
+					InitialDirectory = initialPath
+				};
+
+				ofd.Filter = string.Join("|", filters);
+
+				selectedPath = ofd.FileName;
+				return ofd.ShowDialog();
 			}
 		}
 	}

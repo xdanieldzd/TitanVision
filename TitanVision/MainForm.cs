@@ -108,20 +108,43 @@ namespace TitanVision
 				config = programConfigPath.DeserializeFromFile<Configuration>();
 			}
 
+			CreateRenderers();
+
+			enableCharacterOverridesToolStripMenuItem.DataBindings.Add(nameof(enableCharacterOverridesToolStripMenuItem.Checked), config, nameof(config.OverridesEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+		}
+
+		private void CreateRenderers()
+		{
 			renderers = config.FontPaths.Where(x => File.Exists(x)).Select(x => new GameRenderer(x)).ToArray();
 			foreach (var renderer in renderers)
 				foreach (var charaOverride in config.CharacterOverrides)
 					renderer.SetCharacterOverride(charaOverride.Key, charaOverride.Value);
+		}
 
-			enableCharacterOverridesToolStripMenuItem.DataBindings.Add(nameof(enableCharacterOverridesToolStripMenuItem.Checked), config, nameof(config.OverridesEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+		private void SetRendererSubstitutionLists()
+		{
+			foreach (var renderer in renderers)
+			{
+				renderer.SetSubstitutionList("Enemy", enemyNames);
+				renderer.SetSubstitutionList("SkyItems", skyItemNames);
+				renderer.SetSubstitutionList("LimitItems", limitItemNames);
+				renderer.SetSubstitutionList("UseItems", useItemNames);
+				renderer.SetSubstitutionList("EquipItems", equipItemNames);
+			}
 		}
 
 		private void UpdateTextEditor()
 		{
 			textEditorControl.DataBindings.Clear();
-			textEditorControl.DataBindings.Add(nameof(textEditorControl.TranslatableEntry), cmbMessage, nameof(cmbMessage.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
-			textEditorControl.DataBindings.Add(nameof(textEditorControl.GameRenderer), cmbFont, nameof(cmbFont.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
+
+			if (cmbMessage.SelectedItem != null)
+				textEditorControl.DataBindings.Add(nameof(textEditorControl.TranslatableEntry), cmbMessage, nameof(cmbMessage.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
+
+			if (cmbFont.SelectedItem != null)
+				textEditorControl.DataBindings.Add(nameof(textEditorControl.GameRenderer), cmbFont, nameof(cmbFont.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
+
 			textEditorControl.DataBindings.Add(nameof(textEditorControl.OverridesEnabled), config, nameof(config.OverridesEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
+
 			textEditorControl.ForceRedrawPreviews();
 		}
 
@@ -159,14 +182,7 @@ namespace TitanVision
 			useItemNames = LoadStringSubstJson(Path.Combine(config.JsonRootDirectory, @"Item\useitemnametable.json"));
 			equipItemNames = LoadStringSubstJson(Path.Combine(config.JsonRootDirectory, @"Item\equipitemnametable.json"));
 
-			foreach (var renderer in renderers)
-			{
-				renderer.SetSubstitutionList("Enemy", enemyNames);
-				renderer.SetSubstitutionList("SkyItems", skyItemNames);
-				renderer.SetSubstitutionList("LimitItems", limitItemNames);
-				renderer.SetSubstitutionList("UseItems", useItemNames);
-				renderer.SetSubstitutionList("EquipItems", equipItemNames);
-			}
+			SetRendererSubstitutionLists();
 
 			tvTextFiles.Nodes.Clear();
 			var rootDirectoryInfo = new DirectoryInfo(config.JsonRootDirectory);
@@ -215,11 +231,24 @@ namespace TitanVision
 
 		private void characterOverridesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			var characterOverrideForm = new CharacterOverrideForm();
-			characterOverrideForm.InitializeDictionaryEditor(config.CharacterOverrides);
+			var characterOverrideForm = new CharacterOverrideForm(config.CharacterOverrides);
 			characterOverrideForm.ShowDialog();
 
 			textEditorControl.ForceRedrawPreviews();
+		}
+
+		private void fontPathsToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var fontPathsForm = new FontPathsForm(config.FontPaths);
+			fontPathsForm.ShowDialog();
+
+			cmbFont.DataSource = null;
+
+			CreateRenderers();
+			SetRendererSubstitutionLists();
+
+			cmbFont.DisplayMember = "FontName";
+			cmbFont.DataSource = renderers;
 		}
 
 		private void MainForm_PropertyChanged(object sender, PropertyChangedEventArgs e)

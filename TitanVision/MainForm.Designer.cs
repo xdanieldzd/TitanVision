@@ -45,6 +45,7 @@
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
 			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
+			this.fontPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -136,7 +137,8 @@
 			this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.enableCharacterOverridesToolStripMenuItem,
             this.toolStripMenuItem1,
-            this.characterOverridesToolStripMenuItem});
+            this.characterOverridesToolStripMenuItem,
+            this.fontPathsToolStripMenuItem});
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
@@ -200,6 +202,13 @@
 			this.textEditorControl.TabIndex = 1;
 			this.textEditorControl.TranslatableEntry = null;
 			// 
+			// fontPathsToolStripMenuItem
+			// 
+			this.fontPathsToolStripMenuItem.Name = "fontPathsToolStripMenuItem";
+			this.fontPathsToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+			this.fontPathsToolStripMenuItem.Text = "&Font Paths...";
+			this.fontPathsToolStripMenuItem.Click += new System.EventHandler(this.fontPathsToolStripMenuItem_Click);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -239,6 +248,7 @@
 		private Controls.BindableToolStripMenuItem enableCharacterOverridesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem characterOverridesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem fontPathsToolStripMenuItem;
 	}
 }
 
