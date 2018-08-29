@@ -8,7 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TitanVision
+using TitanVision.DataStorage;
+
+namespace TitanVision.Controls
 {
 	public partial class TextEditorControl : UserControl
 	{

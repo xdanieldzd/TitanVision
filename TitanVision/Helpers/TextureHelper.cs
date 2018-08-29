@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 
-namespace TitanVision
+namespace TitanVision.Helpers
 {
 	// TODO: taken from 2015 Berund2, maybe overhaul?
 

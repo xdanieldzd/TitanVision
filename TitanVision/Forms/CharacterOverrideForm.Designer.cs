@@ -1,4 +1,4 @@
-﻿namespace TitanVision
+﻿namespace TitanVision.Forms
 {
 	partial class CharacterOverrideForm
 	{

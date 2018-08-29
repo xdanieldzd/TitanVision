@@ -1,4 +1,4 @@
-﻿namespace TitanVision
+﻿namespace TitanVision.Controls
 {
 	partial class TextEditorControl
 	{

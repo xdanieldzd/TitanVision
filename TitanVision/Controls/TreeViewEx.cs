@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 
-namespace TitanVision
+namespace TitanVision.Controls
 {
 	public class TreeViewEx : TreeView
 	{

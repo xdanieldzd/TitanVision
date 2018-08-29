@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.ComponentModel;
 
-namespace TitanVision
+namespace TitanVision.Controls
 {
 	// https://social.msdn.microsoft.com/Forums/windows/en-US/0b8cba1e-f7ce-4ab0-a45b-2093dc38afc8/bind-property-in-toolstripmenuitem
 

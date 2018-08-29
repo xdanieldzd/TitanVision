@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace TitanVision
+namespace TitanVision.Forms
 {
 	// partially https://stackoverflow.com/a/577105
 

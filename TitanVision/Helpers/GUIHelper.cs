@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 using Microsoft.WindowsAPICodePack.Dialogs;
 
-namespace TitanVision
+namespace TitanVision.Helpers
 {
 	public static class GUIHelper
 	{

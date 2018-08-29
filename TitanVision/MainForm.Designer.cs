@@ -38,13 +38,13 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.BindableToolStripMenuItem();
-			this.tvTextFiles = new TitanVision.TreeViewEx();
-			this.textEditorControl = new TitanVision.TextEditorControl();
+			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.characterOverridesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
+			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
 			this.menuStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -141,6 +141,25 @@
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
 			// 
+			// enableCharacterOverridesToolStripMenuItem
+			// 
+			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
+			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
+			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(213, 6);
+			// 
+			// characterOverridesToolStripMenuItem
+			// 
+			this.characterOverridesToolStripMenuItem.Name = "characterOverridesToolStripMenuItem";
+			this.characterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+			this.characterOverridesToolStripMenuItem.Text = "&Character Overrides...";
+			this.characterOverridesToolStripMenuItem.Click += new System.EventHandler(this.characterOverridesToolStripMenuItem_Click);
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -155,13 +174,6 @@
 			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
 			this.aboutToolStripMenuItem.Text = "&About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
-			// 
-			// enableCharacterOverridesToolStripMenuItem
-			// 
-			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
-			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
-			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
-			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
 			// 
 			// tvTextFiles
 			// 
@@ -188,18 +200,6 @@
 			this.textEditorControl.TabIndex = 1;
 			this.textEditorControl.TranslatableEntry = null;
 			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(213, 6);
-			// 
-			// characterOverridesToolStripMenuItem
-			// 
-			this.characterOverridesToolStripMenuItem.Name = "characterOverridesToolStripMenuItem";
-			this.characterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
-			this.characterOverridesToolStripMenuItem.Text = "&Character Overrides...";
-			this.characterOverridesToolStripMenuItem.Click += new System.EventHandler(this.characterOverridesToolStripMenuItem_Click);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -222,9 +222,9 @@
 		}
 
 		#endregion
-		private TextEditorControl textEditorControl;
+		private Controls.TextEditorControl textEditorControl;
 		private System.Windows.Forms.ComboBox cmbMessage;
-		private TreeViewEx tvTextFiles;
+		private Controls.TreeViewEx tvTextFiles;
 		private System.Windows.Forms.Label lblInfo;
 		private System.Windows.Forms.ComboBox cmbFont;
 		private System.Windows.Forms.MenuStrip menuStrip;
@@ -236,7 +236,7 @@
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-		private BindableToolStripMenuItem enableCharacterOverridesToolStripMenuItem;
+		private Controls.BindableToolStripMenuItem enableCharacterOverridesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem characterOverridesToolStripMenuItem;
 	}

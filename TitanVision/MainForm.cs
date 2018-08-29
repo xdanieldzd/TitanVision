@@ -11,6 +11,10 @@ using System.IO;
 
 using Newtonsoft.Json.Linq;
 
+using TitanVision.DataStorage;
+using TitanVision.Forms;
+using TitanVision.Helpers;
+
 namespace TitanVision
 {
 	public partial class MainForm : Form

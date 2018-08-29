@@ -9,7 +9,7 @@ using System.ComponentModel;
 
 using Newtonsoft.Json;
 
-namespace TitanVision
+namespace TitanVision.DataStorage
 {
 	public class Translation
 	{

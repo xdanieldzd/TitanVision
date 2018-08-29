@@ -7,7 +7,9 @@ using System.IO;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace TitanVision
+using TitanVision.Helpers;
+
+namespace TitanVision.DataReaders
 {
 	public class BCFNTReader
 	{
