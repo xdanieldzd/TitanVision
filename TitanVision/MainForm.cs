@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading;
 
 using Newtonsoft.Json.Linq;
 
@@ -28,10 +29,10 @@ namespace TitanVision
 
 		Configuration config;
 
-		GameRenderer[] renderers;
+		List<GameRenderer> renderers;
 		List<string> enemyNames, skyItemNames, limitItemNames, useItemNames, equipItemNames;
 
-		bool dataLoaded;
+		bool dataLoaded, fontsReady;
 
 		string currentFilePath;
 		Translation currentTranslationFile;
@@ -47,6 +48,7 @@ namespace TitanVision
 			comboTranslatedBrush = new SolidBrush(Color.FromArgb(224, 255, 224));
 
 			dataLoaded = false;
+			fontsReady = false;
 
 			enableCharacterOverridesToolStripMenuItem.CheckedChanged += (s, e) =>
 			{
@@ -63,7 +65,6 @@ namespace TitanVision
 
 				UpdateTextEditor();
 			};
-
 			cmbMessage.DrawItem += (s, e) =>
 			{
 				var entry = ((s as ComboBox).Items[e.Index] as TranslatableEntry);
@@ -75,7 +76,6 @@ namespace TitanVision
 				TextRenderer.DrawText(e.Graphics, text, e.Font, e.Bounds, SystemColors.ControlText, TextFormatFlags.Left | TextFormatFlags.WordEllipsis);
 				e.DrawFocusRectangle();
 			};
-
 			cmbMessage.DisplayMember = "Original";
 
 			cmbFont.SelectedIndexChanged += (s, e) =>
@@ -83,15 +83,14 @@ namespace TitanVision
 				UpdateTextEditor();
 			};
 
-			cmbFont.DisplayMember = "FontName";
-			cmbFont.DataSource = renderers;
-
 			FormClosing += (s, e) =>
 			{
 				config.SerializeToFile(programConfigPath);
 			};
 
 			UpdateFormTitle();
+
+			tsslStatus.Text = "Ready";
 		}
 
 		private void LoadConfiguration()
@@ -108,21 +107,79 @@ namespace TitanVision
 				config = programConfigPath.DeserializeFromFile<Configuration>();
 			}
 
-			CreateRenderers();
-
 			enableCharacterOverridesToolStripMenuItem.DataBindings.Add(nameof(enableCharacterOverridesToolStripMenuItem.Checked), config, nameof(config.OverridesEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
 		}
 
 		private void CreateRenderers()
 		{
-			renderers = config.FontPaths.Where(x => File.Exists(x)).Select(x => new GameRenderer(x)).ToArray();
-			foreach (var renderer in renderers)
-				foreach (var charaOverride in config.CharacterOverrides)
-					renderer.SetCharacterOverride(charaOverride.Key, charaOverride.Value);
+			if (false)
+			{
+				var createdRenderers = config.FontPaths.Where(x => File.Exists(x)).Select(x => new GameRenderer(x)).ToList();
+				foreach (var renderer in createdRenderers)
+					foreach (var charaOverride in config.CharacterOverrides)
+						renderer.SetCharacterOverride(charaOverride.Key, charaOverride.Value);
+
+				cmbFont.DisplayMember = "FontName";
+				cmbFont.DataSource = renderers;
+
+				fontsReady = true;
+			}
+			else
+			{
+				var tokenSource = new CancellationTokenSource();
+				var ct = tokenSource.Token;
+
+				tspbProgress.Visible = true;
+
+				Task task = Task.Factory.StartNew(() =>
+				{
+					var _lock = new object();
+					renderers = new List<GameRenderer>();
+
+					ct.ThrowIfCancellationRequested();
+
+					int count = 0;
+					Parallel.ForEach(config.FontPaths, (file) =>
+					{
+						if (ct.IsCancellationRequested)
+							ct.ThrowIfCancellationRequested();
+
+						var renderer = new GameRenderer(file);
+						foreach (var charaOverride in config.CharacterOverrides)
+							renderer.SetCharacterOverride(charaOverride.Key, charaOverride.Value);
+						lock (_lock) { renderers.Add(renderer); }
+
+						BeginInvoke((Action)delegate ()
+						{
+							tsslStatus.Text = $"Loading font {Path.GetFileName(file)}...";
+							tspbProgress.SetProgressNoAnimation((tspbProgress.Maximum / (config.FontPaths.Count)) * count);
+							count++;
+						});
+					});
+
+					renderers = renderers.OrderBy(x => config.FontPaths.FindIndex(y => Path.GetFileNameWithoutExtension(y) == x.FontName)).ToList();
+				}, tokenSource.Token);
+
+				task.ContinueWith((t) =>
+				{
+					BeginInvoke((Action)delegate ()
+					{
+						tsslStatus.Text = "Ready";
+						tspbProgress.Visible = false;
+
+						cmbFont.DisplayMember = "FontName";
+						cmbFont.DataSource = renderers;
+
+						fontsReady = true;
+					});
+				});
+			}
 		}
 
 		private void SetRendererSubstitutionLists()
 		{
+			if (renderers == null) return;
+
 			foreach (var renderer in renderers)
 			{
 				renderer.SetSubstitutionList("Enemy", enemyNames);
@@ -135,6 +192,8 @@ namespace TitanVision
 
 		private void UpdateTextEditor()
 		{
+			if (!fontsReady) return;
+
 			textEditorControl.DataBindings.Clear();
 
 			if (cmbMessage.SelectedItem != null)
@@ -246,9 +305,11 @@ namespace TitanVision
 
 			CreateRenderers();
 			SetRendererSubstitutionLists();
+		}
 
-			cmbFont.DisplayMember = "FontName";
-			cmbFont.DataSource = renderers;
+		private void MainForm_Shown(object sender, EventArgs e)
+		{
+			CreateRenderers();
 		}
 
 		private void MainForm_PropertyChanged(object sender, PropertyChangedEventArgs e)

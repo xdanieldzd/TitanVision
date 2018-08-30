@@ -41,12 +41,16 @@
 			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.characterOverridesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.fontPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
 			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
-			this.fontPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.statusStrip = new System.Windows.Forms.StatusStrip();
+			this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
+			this.tspbProgress = new System.Windows.Forms.ToolStripProgressBar();
 			this.menuStrip.SuspendLayout();
+			this.statusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// cmbMessage
@@ -162,6 +166,13 @@
 			this.characterOverridesToolStripMenuItem.Text = "&Character Overrides...";
 			this.characterOverridesToolStripMenuItem.Click += new System.EventHandler(this.characterOverridesToolStripMenuItem_Click);
 			// 
+			// fontPathsToolStripMenuItem
+			// 
+			this.fontPathsToolStripMenuItem.Name = "fontPathsToolStripMenuItem";
+			this.fontPathsToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+			this.fontPathsToolStripMenuItem.Text = "&Font Paths...";
+			this.fontPathsToolStripMenuItem.Click += new System.EventHandler(this.fontPathsToolStripMenuItem_Click);
+			// 
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -185,7 +196,7 @@
 			this.tvTextFiles.HideSelection = false;
 			this.tvTextFiles.Location = new System.Drawing.Point(12, 27);
 			this.tvTextFiles.Name = "tvTextFiles";
-			this.tvTextFiles.Size = new System.Drawing.Size(234, 623);
+			this.tvTextFiles.Size = new System.Drawing.Size(234, 625);
 			this.tvTextFiles.TabIndex = 2;
 			// 
 			// textEditorControl
@@ -198,22 +209,42 @@
 			this.textEditorControl.Location = new System.Drawing.Point(252, 54);
 			this.textEditorControl.Name = "textEditorControl";
 			this.textEditorControl.OverridesEnabled = false;
-			this.textEditorControl.Size = new System.Drawing.Size(920, 596);
+			this.textEditorControl.Size = new System.Drawing.Size(920, 598);
 			this.textEditorControl.TabIndex = 1;
 			this.textEditorControl.TranslatableEntry = null;
 			// 
-			// fontPathsToolStripMenuItem
+			// statusStrip
 			// 
-			this.fontPathsToolStripMenuItem.Name = "fontPathsToolStripMenuItem";
-			this.fontPathsToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
-			this.fontPathsToolStripMenuItem.Text = "&Font Paths...";
-			this.fontPathsToolStripMenuItem.Click += new System.EventHandler(this.fontPathsToolStripMenuItem_Click);
+			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslStatus,
+            this.tspbProgress});
+			this.statusStrip.Location = new System.Drawing.Point(0, 655);
+			this.statusStrip.Name = "statusStrip";
+			this.statusStrip.Size = new System.Drawing.Size(1184, 22);
+			this.statusStrip.TabIndex = 6;
+			this.statusStrip.Text = "statusStrip1";
+			// 
+			// tsslStatus
+			// 
+			this.tsslStatus.Name = "tsslStatus";
+			this.tsslStatus.Size = new System.Drawing.Size(936, 17);
+			this.tsslStatus.Spring = true;
+			this.tsslStatus.Text = "---";
+			this.tsslStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
+			// tspbProgress
+			// 
+			this.tspbProgress.Name = "tspbProgress";
+			this.tspbProgress.Size = new System.Drawing.Size(200, 16);
+			this.tspbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+			this.tspbProgress.Visible = false;
 			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1184, 662);
+			this.ClientSize = new System.Drawing.Size(1184, 677);
+			this.Controls.Add(this.statusStrip);
 			this.Controls.Add(this.menuStrip);
 			this.Controls.Add(this.cmbFont);
 			this.Controls.Add(this.lblInfo);
@@ -223,8 +254,12 @@
 			this.DoubleBuffered = true;
 			this.MainMenuStrip = this.menuStrip;
 			this.Name = "MainForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+			this.Shown += new System.EventHandler(this.MainForm_Shown);
 			this.menuStrip.ResumeLayout(false);
 			this.menuStrip.PerformLayout();
+			this.statusStrip.ResumeLayout(false);
+			this.statusStrip.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -249,6 +284,9 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem characterOverridesToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem fontPathsToolStripMenuItem;
+		private System.Windows.Forms.StatusStrip statusStrip;
+		private System.Windows.Forms.ToolStripStatusLabel tsslStatus;
+		private System.Windows.Forms.ToolStripProgressBar tspbProgress;
 	}
 }
 

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Reflection;
+using System.Windows.Forms;
 
 using Newtonsoft.Json;
 
@@ -43,6 +44,22 @@ namespace TitanVision
 			{
 				return (T)JsonConvert.DeserializeObject(reader.ReadToEnd(), typeof(T), new JsonSerializerSettings() { Formatting = Formatting.Indented });
 			}
+		}
+
+		// https://derekwill.com/2014/06/24/combating-the-lag-of-the-winforms-progressbar/
+		public static void SetProgressNoAnimation(this ToolStripProgressBar pb, int value)
+		{
+			if (value == pb.Maximum)
+			{
+				pb.Maximum = value + 1;
+				pb.Value = value + 1;
+				pb.Maximum = value;
+			}
+			else
+			{
+				pb.Value = value + 1;
+			}
+			pb.Value = value;
 		}
 	}
 }
