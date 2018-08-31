@@ -227,7 +227,7 @@
 			// tsslStatus
 			// 
 			this.tsslStatus.Name = "tsslStatus";
-			this.tsslStatus.Size = new System.Drawing.Size(936, 17);
+			this.tsslStatus.Size = new System.Drawing.Size(1169, 17);
 			this.tsslStatus.Spring = true;
 			this.tsslStatus.Text = "---";
 			this.tsslStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;

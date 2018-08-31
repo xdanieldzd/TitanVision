@@ -112,68 +112,55 @@ namespace TitanVision
 
 		private void CreateRenderers()
 		{
-			if (false)
+			var tokenSource = new CancellationTokenSource();
+			var ct = tokenSource.Token;
+
+			tspbProgress.Visible = true;
+
+			Task task = Task.Factory.StartNew(() =>
 			{
-				var createdRenderers = config.FontPaths.Where(x => File.Exists(x)).Select(x => new GameRenderer(x)).ToList();
-				foreach (var renderer in createdRenderers)
+				var _lock = new object();
+				renderers = new List<GameRenderer>();
+
+				ct.ThrowIfCancellationRequested();
+
+				int count = 0;
+				Parallel.ForEach(config.FontPaths, (file) =>
+				{
+					if (ct.IsCancellationRequested)
+						ct.ThrowIfCancellationRequested();
+
+					if (!File.Exists(file)) return;
+
+					var renderer = new GameRenderer(file);
 					foreach (var charaOverride in config.CharacterOverrides)
 						renderer.SetCharacterOverride(charaOverride.Key, charaOverride.Value);
+					lock (_lock) { renderers.Add(renderer); }
 
-				cmbFont.DisplayMember = "FontName";
-				cmbFont.DataSource = renderers;
-
-				fontsReady = true;
-			}
-			else
-			{
-				var tokenSource = new CancellationTokenSource();
-				var ct = tokenSource.Token;
-
-				tspbProgress.Visible = true;
-
-				Task task = Task.Factory.StartNew(() =>
-				{
-					var _lock = new object();
-					renderers = new List<GameRenderer>();
-
-					ct.ThrowIfCancellationRequested();
-
-					int count = 0;
-					Parallel.ForEach(config.FontPaths, (file) =>
-					{
-						if (ct.IsCancellationRequested)
-							ct.ThrowIfCancellationRequested();
-
-						var renderer = new GameRenderer(file);
-						foreach (var charaOverride in config.CharacterOverrides)
-							renderer.SetCharacterOverride(charaOverride.Key, charaOverride.Value);
-						lock (_lock) { renderers.Add(renderer); }
-
-						BeginInvoke((Action)delegate ()
-						{
-							tsslStatus.Text = $"Loading font {Path.GetFileName(file)}...";
-							tspbProgress.SetProgressNoAnimation((tspbProgress.Maximum / (config.FontPaths.Count)) * count);
-							count++;
-						});
-					});
-
-					renderers = renderers.OrderBy(x => config.FontPaths.FindIndex(y => Path.GetFileNameWithoutExtension(y) == x.FontName)).ToList();
-				}, tokenSource.Token);
-
-				task.ContinueWith((t) =>
-				{
 					BeginInvoke((Action)delegate ()
 					{
-						tsslStatus.Text = "Ready";
-						tspbProgress.Visible = false;
-
-						cmbFont.DisplayMember = "FontName";
-						cmbFont.DataSource = renderers;
-
-						fontsReady = true;
+						tsslStatus.Text = $"Loading font {Path.GetFileName(file)}...";
+						tspbProgress.SetProgressNoAnimation((tspbProgress.Maximum / (config.FontPaths.Count)) * count);
+						count++;
 					});
 				});
-			}
+
+				renderers = renderers.OrderBy(x => config.FontPaths.FindIndex(y => Path.GetFileNameWithoutExtension(y) == x.FontName)).ToList();
+			}, tokenSource.Token);
+
+			task.ContinueWith((t) =>
+			{
+				BeginInvoke((Action)delegate ()
+				{
+					tsslStatus.Text = "Ready";
+					tspbProgress.Visible = false;
+
+					cmbFont.DisplayMember = "FontName";
+					cmbFont.DataSource = renderers;
+
+					fontsReady = true;
+				});
+			});
 		}
 
 		private void SetRendererSubstitutionLists()
@@ -246,6 +233,7 @@ namespace TitanVision
 			tvTextFiles.Nodes.Clear();
 			var rootDirectoryInfo = new DirectoryInfo(config.JsonRootDirectory);
 			var rootNode = CreateDirectoryNode(rootDirectoryInfo);
+			rootNode.Text = "Root";
 			rootNode.Expand();
 			tvTextFiles.Nodes.Add(rootNode);
 
@@ -267,6 +255,16 @@ namespace TitanVision
 			UpdateFormTitle();
 
 			saveDirectoryToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblInfo.Enabled = textEditorControl.Enabled = true;
+		}
+
+		private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
+		{
+			var directoryNode = new TreeNode(directoryInfo.Name);
+			foreach (var directory in directoryInfo.GetDirectories().Where(x => x.GetFiles("*", SearchOption.AllDirectories).Any(y => y.Extension == ".json")))
+				directoryNode.Nodes.Add(CreateDirectoryNode(directory));
+			foreach (var file in directoryInfo.GetFiles("*.json"))
+				directoryNode.Nodes.Add(new TreeNode(file.Name) { Tag = (file.FullName, file.FullName.DeserializeFromFile<Translation>()) });
+			return directoryNode;
 		}
 
 		private void saveDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -320,16 +318,6 @@ namespace TitanVision
 			UpdateInfoLabel();
 		}
 
-		private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
-		{
-			var directoryNode = new TreeNode(directoryInfo.Name);
-			foreach (var directory in directoryInfo.GetDirectories().Where(x => x.GetFiles("*", SearchOption.AllDirectories).Any(y => y.Extension == ".json")))
-				directoryNode.Nodes.Add(CreateDirectoryNode(directory));
-			foreach (var file in directoryInfo.GetFiles("*.json"))
-				directoryNode.Nodes.Add(new TreeNode(file.Name) { Tag = (file.FullName, file.FullName.DeserializeFromFile<Translation>()) });
-			return directoryNode;
-		}
-
 		private void SaveData()
 		{
 			foreach (var node in FindAllChangedTranslations(tvTextFiles.Nodes))
@@ -361,16 +349,6 @@ namespace TitanVision
 		{
 			var jsonObject = JObject.Parse(File.ReadAllText(jsonFileName));
 			return jsonObject["Entries"].Select(x => x["Translation"]).Values<string>().ToList();
-		}
-
-		private void pictureBox1_Paint(object sender, PaintEventArgs e)
-		{
-			/*string test = "This is a [Color:0003]colored [Color:0005]test[Color:0000]!\r\n" +
-				"Look, it's [Color:0010]colorful[Color:0000]! [Color:0011]COLOR. FUL.[Color:0000]\r\n[Page]\r\n\r\n" +
-				"Some enemy is called [Color:0005][Enemy:0003][Color:0000], huh!\r\n" +
-				"And there's an item called [Color:0005][Item:0010][Color:0000], I think?";
-
-			textRenderer.DrawString(e.Graphics, test);*/
 		}
 	}
 }
