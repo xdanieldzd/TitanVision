@@ -38,6 +38,8 @@ namespace TitanVision
 		string currentFilePath;
 		Translation currentTranslationFile;
 
+		Dictionary<string, Translation> translationFilesOpened;
+
 		public MainForm()
 		{
 			InitializeComponent();
@@ -133,6 +135,8 @@ namespace TitanVision
 			};
 			cmbMessage.DrawItem += (s, e) =>
 			{
+				if (e.Index == -1) return;
+
 				var entry = ((s as ComboBox).Items[e.Index] as TranslatableEntry);
 
 				string label;
@@ -351,6 +355,9 @@ namespace TitanVision
 				{
 					(string path, Translation translation) = (ValueTuple<string, Translation>)e.Node.Tag;
 
+					if (!translationFilesOpened.ContainsKey(path))
+						translationFilesOpened[path] = translation;
+
 					currentFilePath = path;
 					currentTranslationFile = translation;
 					cmbMessage.DataSource = currentTranslationFile.Entries;
@@ -358,11 +365,13 @@ namespace TitanVision
 				}
 			};
 
+			translationFilesOpened = new Dictionary<string, Translation>();
+
 			dataLoaded = true;
 
 			UpdateFormTitle();
 
-			saveTranslatedToolStripMenuItem.Enabled = saveAllFilesToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = true;
+			saveToolStripMenuItem.Enabled = saveAllToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = true;
 		}
 
 		private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
@@ -375,14 +384,14 @@ namespace TitanVision
 			return directoryNode;
 		}
 
-		private void saveTranslatedToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SaveData(false);
-		}
-
-		private void saveAllFilesToolStripMenuItem_Click(object sender, EventArgs e)
+		private void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SaveData(true);
+		}
+
+		private void saveAllToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SaveData(false);
 		}
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -432,29 +441,32 @@ namespace TitanVision
 			UpdateInfoLabel();
 		}
 
-		private void SaveData(bool forceSaveAll)
+		private void SaveData(bool saveOnlyAccessedFiles)
 		{
-			foreach (var node in FindAllChangedTranslations(tvTextFiles.Nodes, forceSaveAll))
+			if (saveOnlyAccessedFiles)
 			{
-				(string path, Translation translation) = (ValueTuple<string, Translation>)node.Tag;
-				translation.SerializeToFile(path);
+				foreach (var pair in translationFilesOpened)
+					pair.Value.SerializeToFile(pair.Key);
+			}
+			else
+			{
+				foreach (var node in FindAllTranslations(tvTextFiles.Nodes))
+				{
+					(string path, Translation translation) = (ValueTuple<string, Translation>)node.Tag;
+					translation.SerializeToFile(path);
+				}
 			}
 
 			config.SerializeToFile(programConfigPath);
 		}
 
-		private IEnumerable<TreeNode> FindAllChangedTranslations(TreeNodeCollection nodes, bool forceSaveAll = false)
+		private IEnumerable<TreeNode> FindAllTranslations(TreeNodeCollection nodes)
 		{
 			foreach (TreeNode node in nodes)
 			{
 				if (node.Tag is ValueTuple<string, Translation>)
-				{
-					(string path, Translation translation) = (ValueTuple<string, Translation>)node.Tag;
-					if (forceSaveAll || translation.Entries.Any(x => string.Compare(x.Original, x.Translation) != 0))
-						yield return node;
-				}
-
-				foreach (var child in FindAllChangedTranslations(node.Nodes))
+					yield return node;
+				foreach (var child in FindAllTranslations(node.Nodes))
 					yield return child;
 			}
 		}

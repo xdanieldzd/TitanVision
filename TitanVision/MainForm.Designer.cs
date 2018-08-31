@@ -34,10 +34,13 @@
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveTranslatedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.characterOverridesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.fontPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,9 +49,6 @@
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tspbProgress = new System.Windows.Forms.ToolStripProgressBar();
-			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.saveAllFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
 			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
 			this.menuStrip.SuspendLayout();
@@ -108,8 +108,8 @@
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openDirectoryToolStripMenuItem,
             this.toolStripSeparator1,
-            this.saveTranslatedToolStripMenuItem,
-            this.saveAllFilesToolStripMenuItem,
+            this.saveToolStripMenuItem,
+            this.saveAllToolStripMenuItem,
             this.toolStripSeparator2,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -124,19 +124,32 @@
 			this.openDirectoryToolStripMenuItem.Text = "&Open Directory...";
 			this.openDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openDirectoryToolStripMenuItem_Click);
 			// 
-			// saveTranslatedToolStripMenuItem
-			// 
-			this.saveTranslatedToolStripMenuItem.Enabled = false;
-			this.saveTranslatedToolStripMenuItem.Name = "saveTranslatedToolStripMenuItem";
-			this.saveTranslatedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-			this.saveTranslatedToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-			this.saveTranslatedToolStripMenuItem.Text = "&Save Translated";
-			this.saveTranslatedToolStripMenuItem.Click += new System.EventHandler(this.saveTranslatedToolStripMenuItem_Click);
-			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
 			this.toolStripSeparator1.Size = new System.Drawing.Size(205, 6);
+			// 
+			// saveToolStripMenuItem
+			// 
+			this.saveToolStripMenuItem.Enabled = false;
+			this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.saveToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+			this.saveToolStripMenuItem.Text = "&Save...";
+			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+			// 
+			// saveAllToolStripMenuItem
+			// 
+			this.saveAllToolStripMenuItem.Enabled = false;
+			this.saveAllToolStripMenuItem.Name = "saveAllToolStripMenuItem";
+			this.saveAllToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+			this.saveAllToolStripMenuItem.Text = "Save &All...";
+			this.saveAllToolStripMenuItem.Click += new System.EventHandler(this.saveAllToolStripMenuItem_Click);
+			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(205, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
@@ -155,6 +168,13 @@
 			this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
+			// 
+			// enableCharacterOverridesToolStripMenuItem
+			// 
+			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
+			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
+			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
 			// 
 			// toolStripMenuItem1
 			// 
@@ -215,26 +235,6 @@
 			this.tspbProgress.Size = new System.Drawing.Size(200, 16);
 			this.tspbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.tspbProgress.Visible = false;
-			// 
-			// toolStripSeparator2
-			// 
-			this.toolStripSeparator2.Name = "toolStripSeparator2";
-			this.toolStripSeparator2.Size = new System.Drawing.Size(205, 6);
-			// 
-			// saveAllFilesToolStripMenuItem
-			// 
-			this.saveAllFilesToolStripMenuItem.Enabled = false;
-			this.saveAllFilesToolStripMenuItem.Name = "saveAllFilesToolStripMenuItem";
-			this.saveAllFilesToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
-			this.saveAllFilesToolStripMenuItem.Text = "Save &All Files";
-			this.saveAllFilesToolStripMenuItem.Click += new System.EventHandler(this.saveAllFilesToolStripMenuItem_Click);
-			// 
-			// enableCharacterOverridesToolStripMenuItem
-			// 
-			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
-			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
-			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
-			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
 			// 
 			// tvTextFiles
 			// 
@@ -297,7 +297,7 @@
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openDirectoryToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem saveTranslatedToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
@@ -310,7 +310,7 @@
 		private System.Windows.Forms.ToolStripStatusLabel tsslStatus;
 		private System.Windows.Forms.ToolStripProgressBar tspbProgress;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-		private System.Windows.Forms.ToolStripMenuItem saveAllFilesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
 	}
 }
 
