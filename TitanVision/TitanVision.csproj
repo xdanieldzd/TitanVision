@@ -72,6 +72,9 @@
     <Compile Include="Controls\ListViewEx.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\TreeViewEx.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataReaders\BCFNTReader.cs" />
     <Compile Include="Controls\BindableToolStripMenuItem.cs">
       <SubType>Component</SubType>
@@ -108,9 +111,6 @@
     <Compile Include="GameRenderer.cs" />
     <Compile Include="Helpers\TextureHelper.cs" />
     <Compile Include="DataStorage\Translation.cs" />
-    <Compile Include="Controls\TreeViewEx.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <EmbeddedResource Include="Forms\CharacterOverrideForm.resx">
       <DependentUpon>CharacterOverrideForm.cs</DependentUpon>
     </EmbeddedResource>

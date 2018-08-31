@@ -25,7 +25,8 @@ namespace TitanVision
 		readonly static string programConfigDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Application.ProductName);
 		readonly static string programConfigPath = Path.Combine(programConfigDir, jsonConfigFileName);
 
-		readonly Brush comboInvalidStringBrush, comboNotTranslatedBrush, comboTranslatedBrush, comboIgnoredBrush;
+		readonly Color invalidOrNothingColor, notTranslatedColor, translatedColor, ignoredColor;
+		readonly Brush invalidOrNothingBrush, notTranslatedBrush, translatedBrush, ignoredBrush;
 
 		Configuration config;
 
@@ -43,10 +44,10 @@ namespace TitanVision
 
 			LoadConfiguration();
 
-			comboInvalidStringBrush = new SolidBrush(Color.FromArgb(255, 224, 224));
-			comboNotTranslatedBrush = new SolidBrush(Color.FromArgb(255, 255, 224));
-			comboTranslatedBrush = new SolidBrush(Color.FromArgb(224, 255, 224));
-			comboIgnoredBrush = new SolidBrush(Color.FromArgb(224, 244, 255));
+			invalidOrNothingBrush = new SolidBrush(invalidOrNothingColor = Color.FromArgb(255, 224, 224));
+			notTranslatedBrush = new SolidBrush(notTranslatedColor = Color.FromArgb(255, 255, 224));
+			translatedBrush = new SolidBrush(translatedColor = Color.FromArgb(224, 255, 224));
+			ignoredBrush = new SolidBrush(ignoredColor = Color.FromArgb(224, 244, 255));
 
 			dataLoaded = false;
 			fontsReady = false;
@@ -54,6 +55,59 @@ namespace TitanVision
 			enableCharacterOverridesToolStripMenuItem.CheckedChanged += (s, e) =>
 			{
 				textEditorControl.ForceRedrawPreviews();
+			};
+
+			tvTextFiles.DrawNode += (s, e) =>
+			{
+				if (e.Node == null || !e.Node.IsVisible) return;
+
+				var selected = ((e.State & TreeNodeStates.Selected) == TreeNodeStates.Selected);
+				var unfocused = (!e.Node.TreeView.Focused);
+				var font = (e.Node.NodeFont ?? e.Node.TreeView.Font);
+
+				var textFormatFlags = TextFormatFlags.GlyphOverhangPadding;
+				var textBounds = new Rectangle(e.Bounds.X, e.Bounds.Y + 1, e.Bounds.Width, e.Bounds.Height);
+
+				if (e.Node.Tag is ValueTuple<string, Translation>)
+				{
+					(string path, Translation translation) = (ValueTuple<string, Translation>)e.Node.Tag;
+
+					var translatedCount = translation.Entries.Count(x => x.ID != -1 && !x.IsIgnored && string.Compare(x.Original, x.Translation) != 0);
+					var totalValidCount = translation.Entries.Count(x => x.ID != -1 && !x.IsIgnored);
+
+					var countNoteText = $"[{translatedCount}/{totalValidCount}]";
+					var countNoteTextBounds = new Rectangle(textBounds.Right, textBounds.Top, TextRenderer.MeasureText(countNoteText, font).Width, textBounds.Height);
+					var countNoteBackgroundBounds = new Rectangle(e.Node.Bounds.Right, e.Node.Bounds.Top, countNoteTextBounds.Width, e.Node.Bounds.Height);
+
+					e.Graphics.FillRectangle(SystemBrushes.Window, countNoteBackgroundBounds);
+					if (!selected)
+					{
+						e.Graphics.FillRectangle(((translatedCount == 0 && totalValidCount != 0) ? invalidOrNothingBrush : (translatedCount == totalValidCount ? translatedBrush : notTranslatedBrush)), e.Node.Bounds);
+						TextRenderer.DrawText(e.Graphics, e.Node.Text, font, textBounds, SystemColors.ControlText, textFormatFlags);
+						TextRenderer.DrawText(e.Graphics, countNoteText, font, countNoteTextBounds, ControlPaint.Dark((translatedCount == 0 && totalValidCount != 0) ? invalidOrNothingColor : (translatedCount == totalValidCount ? translatedColor : notTranslatedColor)), textFormatFlags);
+					}
+					else
+					{
+						e.Graphics.FillRectangle((unfocused ? SystemBrushes.Control : SystemBrushes.Highlight), e.Node.Bounds);
+						TextRenderer.DrawText(e.Graphics, e.Node.Text, font, textBounds, (unfocused ? SystemColors.ControlText : SystemColors.HighlightText), textFormatFlags);
+						TextRenderer.DrawText(e.Graphics, countNoteText, font, countNoteTextBounds, (unfocused ? ControlPaint.Dark(SystemColors.Control) : SystemColors.Highlight), textFormatFlags);
+					}
+				}
+				else if (selected && unfocused)
+				{
+					e.Graphics.FillRectangle(SystemBrushes.Control, e.Node.Bounds);
+					TextRenderer.DrawText(e.Graphics, e.Node.Text, font, textBounds, SystemColors.ControlText, textFormatFlags);
+				}
+				else if (!selected)
+				{
+					e.Graphics.FillRectangle(SystemBrushes.Window, e.Node.Bounds);
+					TextRenderer.DrawText(e.Graphics, e.Node.Text, font, textBounds, SystemColors.WindowText, textFormatFlags);
+				}
+				else
+				{
+					e.Graphics.FillRectangle(SystemBrushes.Highlight, e.Node.Bounds);
+					TextRenderer.DrawText(e.Graphics, e.Node.Text, font, textBounds, SystemColors.HighlightText, textFormatFlags);
+				}
 			};
 
 			cmbMessage.SelectedIndexChanged += (s, e) =>
@@ -81,10 +135,20 @@ namespace TitanVision
 			{
 				var entry = ((s as ComboBox).Items[e.Index] as TranslatableEntry);
 
-				string label = "(Invalid)";
-				Rectangle rectangle = new Rectangle(e.Bounds.X, (e.Bounds.Y + 2), e.Bounds.Width, (e.Bounds.Height - 4));
+				string label;
+				Rectangle rectangle;
 
-				if (entry.ID != -1)
+				var paddedRect = new Rectangle(e.Bounds.X, (e.Bounds.Y + 2), e.Bounds.Width, (e.Bounds.Height - 4));
+
+				if (entry.ID == -1)
+				{
+					label = "(Invalid)";
+					if ((e.State & DrawItemState.ComboBoxEdit) == DrawItemState.ComboBoxEdit)
+						rectangle = e.Bounds;
+					else
+						rectangle = paddedRect;
+				}
+				else
 				{
 					var text = entry.Original.TrimEnd(Environment.NewLine.ToCharArray());
 					if ((e.State & DrawItemState.ComboBoxEdit) == DrawItemState.ComboBoxEdit)
@@ -93,14 +157,17 @@ namespace TitanVision
 						rectangle = e.Bounds;
 					}
 					else
+					{
 						label = text;
+						rectangle = paddedRect;
+					}
 				}
 
 				e.Graphics.FillRectangle(
-					((entry.ID == -1) ? comboInvalidStringBrush :
-					(entry.IsIgnored ? comboIgnoredBrush :
-					((string.Compare(entry.Original, entry.Translation) == 0) ? comboNotTranslatedBrush :
-					comboTranslatedBrush))),
+					((entry.ID == -1) ? invalidOrNothingBrush :
+					(entry.IsIgnored ? ignoredBrush :
+					((string.Compare(entry.Original, entry.Translation) == 0) ? notTranslatedBrush :
+					translatedBrush))),
 					e.Bounds);
 
 				TextRenderer.DrawText(e.Graphics, label, e.Font, rectangle, SystemColors.ControlText, TextFormatFlags.Left | TextFormatFlags.WordEllipsis);
@@ -295,7 +362,7 @@ namespace TitanVision
 
 			UpdateFormTitle();
 
-			saveDirectoryToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = true;
+			saveTranslatedToolStripMenuItem.Enabled = saveAllFilesToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = true;
 		}
 
 		private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
@@ -308,23 +375,19 @@ namespace TitanVision
 			return directoryNode;
 		}
 
-		private void saveDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
+		private void saveTranslatedToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			SaveData();
+			SaveData(false);
+		}
+
+		private void saveAllFilesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			SaveData(true);
 		}
 
 		private void exitToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			Close();
-		}
-
-		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			var description = System.Reflection.Assembly.GetExecutingAssembly().GetAttribute<System.Reflection.AssemblyDescriptionAttribute>().Description;
-			var copyright = System.Reflection.Assembly.GetExecutingAssembly().GetAttribute<System.Reflection.AssemblyCopyrightAttribute>().Copyright;
-			var version = new Version(Application.ProductVersion);
-
-			GUIHelper.ShowInformationMessage("About", $"About {Application.ProductName}", $"{Application.ProductName} v{version.Major}.{version.Minor} - {description}\n\n{copyright.Replace(" - ", Environment.NewLine)}");
 		}
 
 		private void characterOverridesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -346,6 +409,15 @@ namespace TitanVision
 			SetRendererSubstitutionLists();
 		}
 
+		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			var description = System.Reflection.Assembly.GetExecutingAssembly().GetAttribute<System.Reflection.AssemblyDescriptionAttribute>().Description;
+			var copyright = System.Reflection.Assembly.GetExecutingAssembly().GetAttribute<System.Reflection.AssemblyCopyrightAttribute>().Copyright;
+			var version = new Version(Application.ProductVersion);
+
+			GUIHelper.ShowInformationMessage("About", $"About {Application.ProductName}", $"{Application.ProductName} v{version.Major}.{version.Minor} - {description}\n\n{copyright.Replace(" - ", Environment.NewLine)}");
+		}
+
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			CreateRenderers();
@@ -354,14 +426,15 @@ namespace TitanVision
 		private void MainForm_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
 			cmbMessage.Invalidate();
+			tvTextFiles.Invalidate();
 			textEditorControl.ForceRedrawPreviews();
 
 			UpdateInfoLabel();
 		}
 
-		private void SaveData()
+		private void SaveData(bool forceSaveAll)
 		{
-			foreach (var node in FindAllChangedTranslations(tvTextFiles.Nodes))
+			foreach (var node in FindAllChangedTranslations(tvTextFiles.Nodes, forceSaveAll))
 			{
 				(string path, Translation translation) = (ValueTuple<string, Translation>)node.Tag;
 				translation.SerializeToFile(path);
@@ -370,14 +443,14 @@ namespace TitanVision
 			config.SerializeToFile(programConfigPath);
 		}
 
-		private IEnumerable<TreeNode> FindAllChangedTranslations(TreeNodeCollection nodes)
+		private IEnumerable<TreeNode> FindAllChangedTranslations(TreeNodeCollection nodes, bool forceSaveAll = false)
 		{
 			foreach (TreeNode node in nodes)
 			{
 				if (node.Tag is ValueTuple<string, Translation>)
 				{
 					(string path, Translation translation) = (ValueTuple<string, Translation>)node.Tag;
-					if (translation.Entries.Any(x => string.Compare(x.Original, x.Translation) != 0))
+					if (forceSaveAll || translation.Entries.Any(x => string.Compare(x.Original, x.Translation) != 0))
 						yield return node;
 				}
 

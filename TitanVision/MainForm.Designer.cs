@@ -34,7 +34,7 @@
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.openDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.saveDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.saveTranslatedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -46,6 +46,8 @@
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tspbProgress = new System.Windows.Forms.ToolStripProgressBar();
+			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.saveAllFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
 			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
@@ -62,7 +64,7 @@
 			this.cmbMessage.Enabled = false;
 			this.cmbMessage.FormattingEnabled = true;
 			this.cmbMessage.IntegralHeight = false;
-			this.cmbMessage.Location = new System.Drawing.Point(252, 27);
+			this.cmbMessage.Location = new System.Drawing.Point(302, 27);
 			this.cmbMessage.Name = "cmbMessage";
 			this.cmbMessage.Size = new System.Drawing.Size(300, 21);
 			this.cmbMessage.TabIndex = 0;
@@ -72,7 +74,7 @@
 			this.lblPreviewFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblPreviewFont.AutoSize = true;
 			this.lblPreviewFont.Enabled = false;
-			this.lblPreviewFont.Location = new System.Drawing.Point(940, 30);
+			this.lblPreviewFont.Location = new System.Drawing.Point(990, 30);
 			this.lblPreviewFont.Name = "lblPreviewFont";
 			this.lblPreviewFont.Size = new System.Drawing.Size(76, 13);
 			this.lblPreviewFont.TabIndex = 3;
@@ -84,7 +86,7 @@
 			this.cmbFont.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbFont.Enabled = false;
 			this.cmbFont.FormattingEnabled = true;
-			this.cmbFont.Location = new System.Drawing.Point(1022, 27);
+			this.cmbFont.Location = new System.Drawing.Point(1072, 27);
 			this.cmbFont.Name = "cmbFont";
 			this.cmbFont.Size = new System.Drawing.Size(150, 21);
 			this.cmbFont.TabIndex = 4;
@@ -97,7 +99,7 @@
             this.helpToolStripMenuItem});
 			this.menuStrip.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip.Name = "menuStrip";
-			this.menuStrip.Size = new System.Drawing.Size(1184, 24);
+			this.menuStrip.Size = new System.Drawing.Size(1234, 24);
 			this.menuStrip.TabIndex = 5;
 			this.menuStrip.Text = "menuStrip1";
 			// 
@@ -105,8 +107,10 @@
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openDirectoryToolStripMenuItem,
-            this.saveDirectoryToolStripMenuItem,
             this.toolStripSeparator1,
+            this.saveTranslatedToolStripMenuItem,
+            this.saveAllFilesToolStripMenuItem,
+            this.toolStripSeparator2,
             this.exitToolStripMenuItem});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -115,27 +119,29 @@
 			// openDirectoryToolStripMenuItem
 			// 
 			this.openDirectoryToolStripMenuItem.Name = "openDirectoryToolStripMenuItem";
-			this.openDirectoryToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.openDirectoryToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
+			this.openDirectoryToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
 			this.openDirectoryToolStripMenuItem.Text = "&Open Directory...";
 			this.openDirectoryToolStripMenuItem.Click += new System.EventHandler(this.openDirectoryToolStripMenuItem_Click);
 			// 
-			// saveDirectoryToolStripMenuItem
+			// saveTranslatedToolStripMenuItem
 			// 
-			this.saveDirectoryToolStripMenuItem.Enabled = false;
-			this.saveDirectoryToolStripMenuItem.Name = "saveDirectoryToolStripMenuItem";
-			this.saveDirectoryToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
-			this.saveDirectoryToolStripMenuItem.Text = "&Save Directory";
-			this.saveDirectoryToolStripMenuItem.Click += new System.EventHandler(this.saveDirectoryToolStripMenuItem_Click);
+			this.saveTranslatedToolStripMenuItem.Enabled = false;
+			this.saveTranslatedToolStripMenuItem.Name = "saveTranslatedToolStripMenuItem";
+			this.saveTranslatedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+			this.saveTranslatedToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+			this.saveTranslatedToolStripMenuItem.Text = "&Save Translated";
+			this.saveTranslatedToolStripMenuItem.Click += new System.EventHandler(this.saveTranslatedToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator1
 			// 
 			this.toolStripSeparator1.Name = "toolStripSeparator1";
-			this.toolStripSeparator1.Size = new System.Drawing.Size(160, 6);
+			this.toolStripSeparator1.Size = new System.Drawing.Size(205, 6);
 			// 
 			// exitToolStripMenuItem
 			// 
 			this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-			this.exitToolStripMenuItem.Size = new System.Drawing.Size(163, 22);
+			this.exitToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
 			this.exitToolStripMenuItem.Text = "E&xit";
 			this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
 			// 
@@ -191,14 +197,14 @@
             this.tspbProgress});
 			this.statusStrip.Location = new System.Drawing.Point(0, 655);
 			this.statusStrip.Name = "statusStrip";
-			this.statusStrip.Size = new System.Drawing.Size(1184, 22);
+			this.statusStrip.Size = new System.Drawing.Size(1234, 22);
 			this.statusStrip.TabIndex = 6;
 			this.statusStrip.Text = "statusStrip1";
 			// 
 			// tsslStatus
 			// 
 			this.tsslStatus.Name = "tsslStatus";
-			this.tsslStatus.Size = new System.Drawing.Size(1169, 17);
+			this.tsslStatus.Size = new System.Drawing.Size(1219, 17);
 			this.tsslStatus.Spring = true;
 			this.tsslStatus.Text = "---";
 			this.tsslStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -210,6 +216,19 @@
 			this.tspbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.tspbProgress.Visible = false;
 			// 
+			// toolStripSeparator2
+			// 
+			this.toolStripSeparator2.Name = "toolStripSeparator2";
+			this.toolStripSeparator2.Size = new System.Drawing.Size(205, 6);
+			// 
+			// saveAllFilesToolStripMenuItem
+			// 
+			this.saveAllFilesToolStripMenuItem.Enabled = false;
+			this.saveAllFilesToolStripMenuItem.Name = "saveAllFilesToolStripMenuItem";
+			this.saveAllFilesToolStripMenuItem.Size = new System.Drawing.Size(208, 22);
+			this.saveAllFilesToolStripMenuItem.Text = "Save &All Files";
+			this.saveAllFilesToolStripMenuItem.Click += new System.EventHandler(this.saveAllFilesToolStripMenuItem_Click);
+			// 
 			// enableCharacterOverridesToolStripMenuItem
 			// 
 			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
@@ -219,13 +238,13 @@
 			// 
 			// tvTextFiles
 			// 
-			this.tvTextFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			this.tvTextFiles.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
 			this.tvTextFiles.Enabled = false;
 			this.tvTextFiles.HideSelection = false;
 			this.tvTextFiles.Location = new System.Drawing.Point(12, 27);
 			this.tvTextFiles.Name = "tvTextFiles";
-			this.tvTextFiles.Size = new System.Drawing.Size(234, 625);
+			this.tvTextFiles.ShowLines = false;
+			this.tvTextFiles.Size = new System.Drawing.Size(284, 625);
 			this.tvTextFiles.TabIndex = 2;
 			// 
 			// textEditorControl
@@ -235,7 +254,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.textEditorControl.Enabled = false;
 			this.textEditorControl.GameRenderer = null;
-			this.textEditorControl.Location = new System.Drawing.Point(252, 54);
+			this.textEditorControl.Location = new System.Drawing.Point(302, 54);
 			this.textEditorControl.Name = "textEditorControl";
 			this.textEditorControl.OverridesEnabled = false;
 			this.textEditorControl.Size = new System.Drawing.Size(920, 598);
@@ -246,7 +265,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(1184, 677);
+			this.ClientSize = new System.Drawing.Size(1234, 677);
 			this.Controls.Add(this.statusStrip);
 			this.Controls.Add(this.menuStrip);
 			this.Controls.Add(this.cmbFont);
@@ -278,7 +297,7 @@
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem openDirectoryToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem saveDirectoryToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveTranslatedToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
 		private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
@@ -290,6 +309,8 @@
 		private System.Windows.Forms.StatusStrip statusStrip;
 		private System.Windows.Forms.ToolStripStatusLabel tsslStatus;
 		private System.Windows.Forms.ToolStripProgressBar tspbProgress;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem saveAllFilesToolStripMenuItem;
 	}
 }
 
