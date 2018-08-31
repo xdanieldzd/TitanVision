@@ -58,13 +58,13 @@
 			// cmbMessage
 			// 
 			this.cmbMessage.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-			this.cmbMessage.DropDownHeight = 250;
+			this.cmbMessage.DropDownHeight = 500;
 			this.cmbMessage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbMessage.DropDownWidth = 400;
 			this.cmbMessage.Enabled = false;
-			this.cmbMessage.FormattingEnabled = true;
 			this.cmbMessage.IntegralHeight = false;
 			this.cmbMessage.Location = new System.Drawing.Point(302, 27);
+			this.cmbMessage.MaxDropDownItems = 32;
 			this.cmbMessage.Name = "cmbMessage";
 			this.cmbMessage.Size = new System.Drawing.Size(300, 21);
 			this.cmbMessage.TabIndex = 0;

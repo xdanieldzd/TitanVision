@@ -33,7 +33,7 @@ namespace TitanVision
 		List<GameRenderer> renderers;
 		List<string> enemyNames, skyItemNames, limitItemNames, useItemNames, equipItemNames;
 
-		bool dataLoaded, fontsReady;
+		bool dataLoaded, fontsReady, substListsAssigned;
 
 		string currentFilePath;
 		Translation currentTranslationFile;
@@ -53,6 +53,7 @@ namespace TitanVision
 
 			dataLoaded = false;
 			fontsReady = false;
+			substListsAssigned = false;
 
 			enableCharacterOverridesToolStripMenuItem.CheckedChanged += (s, e) =>
 			{
@@ -126,12 +127,14 @@ namespace TitanVision
 			{
 				var comboBox = (s as ComboBox);
 				var entry = (comboBox.Items[e.Index] as TranslatableEntry);
-				var lines = entry.Original.Count(x => x == '\n');
-				if (lines == 0) lines = 1;
-				if (lines >= 3) lines = 3;
 
-				var size = TextRenderer.MeasureText("TEXT", comboBox.Font);
-				e.ItemHeight = ((size.Height * lines) + 6);
+				var lines = entry.OriginalArray.Take(3).Where(x => !string.IsNullOrEmpty(x));
+
+				var joined = string.Join(Environment.NewLine, lines);
+				if (string.IsNullOrEmpty(joined)) joined = "(Invalid)";
+
+				var size = TextRenderer.MeasureText(joined, comboBox.Font);
+				e.ItemHeight = (size.Height + 6);
 			};
 			cmbMessage.DrawItem += (s, e) =>
 			{
@@ -278,6 +281,8 @@ namespace TitanVision
 				renderer.SetSubstitutionList("UseItems", useItemNames);
 				renderer.SetSubstitutionList("EquipItems", equipItemNames);
 			}
+
+			substListsAssigned = true;
 		}
 
 		private void UpdateTextEditor()
@@ -340,8 +345,6 @@ namespace TitanVision
 			useItemNames = LoadStringSubstJson(Path.Combine(config.JsonRootDirectory, @"Item\useitemnametable.json"));
 			equipItemNames = LoadStringSubstJson(Path.Combine(config.JsonRootDirectory, @"Item\equipitemnametable.json"));
 
-			SetRendererSubstitutionLists();
-
 			tvTextFiles.Nodes.Clear();
 			var rootDirectoryInfo = new DirectoryInfo(config.JsonRootDirectory);
 			var rootNode = CreateDirectoryNode(rootDirectoryInfo);
@@ -357,6 +360,9 @@ namespace TitanVision
 
 					if (!translationFilesOpened.ContainsKey(path))
 						translationFilesOpened[path] = translation;
+
+					if (!substListsAssigned)
+						SetRendererSubstitutionLists();
 
 					currentFilePath = path;
 					currentTranslationFile = translation;
@@ -415,7 +421,6 @@ namespace TitanVision
 			cmbFont.DataSource = null;
 
 			CreateRenderers();
-			SetRendererSubstitutionLists();
 		}
 
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
