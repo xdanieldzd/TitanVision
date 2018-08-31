@@ -25,7 +25,7 @@ namespace TitanVision
 		readonly static string programConfigDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), Application.ProductName);
 		readonly static string programConfigPath = Path.Combine(programConfigDir, jsonConfigFileName);
 
-		readonly Brush comboInvalidStringBrush, comboNotTranslatedBrush, comboTranslatedBrush;
+		readonly Brush comboInvalidStringBrush, comboNotTranslatedBrush, comboTranslatedBrush, comboIgnoredBrush;
 
 		Configuration config;
 
@@ -46,6 +46,7 @@ namespace TitanVision
 			comboInvalidStringBrush = new SolidBrush(Color.FromArgb(255, 224, 224));
 			comboNotTranslatedBrush = new SolidBrush(Color.FromArgb(255, 255, 224));
 			comboTranslatedBrush = new SolidBrush(Color.FromArgb(224, 255, 224));
+			comboIgnoredBrush = new SolidBrush(Color.FromArgb(224, 244, 255));
 
 			dataLoaded = false;
 			fontsReady = false;
@@ -65,16 +66,47 @@ namespace TitanVision
 
 				UpdateTextEditor();
 			};
+			cmbMessage.MeasureItem += (s, e) =>
+			{
+				var comboBox = (s as ComboBox);
+				var entry = (comboBox.Items[e.Index] as TranslatableEntry);
+				var lines = entry.Original.Count(x => x == '\n');
+				if (lines == 0) lines = 1;
+				if (lines >= 3) lines = 3;
+
+				var size = TextRenderer.MeasureText("TEXT", comboBox.Font);
+				e.ItemHeight = ((size.Height * lines) + 6);
+			};
 			cmbMessage.DrawItem += (s, e) =>
 			{
 				var entry = ((s as ComboBox).Items[e.Index] as TranslatableEntry);
-				var text = ((entry.ID == -1) ? "(Invalid)" : $"#{entry.ID:D3}: {entry.Original.TrimEnd(Environment.NewLine.ToCharArray()).Replace(Environment.NewLine, " ")}");
+
+				string label = "(Invalid)";
+				Rectangle rectangle = new Rectangle(e.Bounds.X, (e.Bounds.Y + 2), e.Bounds.Width, (e.Bounds.Height - 4));
+
+				if (entry.ID != -1)
+				{
+					var text = entry.Original.TrimEnd(Environment.NewLine.ToCharArray());
+					if ((e.State & DrawItemState.ComboBoxEdit) == DrawItemState.ComboBoxEdit)
+					{
+						label = $"#{entry.ID:D3}: {text.Replace(Environment.NewLine, " ")}";
+						rectangle = e.Bounds;
+					}
+					else
+						label = text;
+				}
 
 				e.Graphics.FillRectangle(
-					((entry.ID == -1) ? comboInvalidStringBrush : ((string.Compare(entry.Original, entry.Translation) == 0) ? comboNotTranslatedBrush : comboTranslatedBrush)),
+					((entry.ID == -1) ? comboInvalidStringBrush :
+					(entry.IsIgnored ? comboIgnoredBrush :
+					((string.Compare(entry.Original, entry.Translation) == 0) ? comboNotTranslatedBrush :
+					comboTranslatedBrush))),
 					e.Bounds);
-				TextRenderer.DrawText(e.Graphics, text, e.Font, e.Bounds, SystemColors.ControlText, TextFormatFlags.Left | TextFormatFlags.WordEllipsis);
-				e.DrawFocusRectangle();
+
+				TextRenderer.DrawText(e.Graphics, label, e.Font, rectangle, SystemColors.ControlText, TextFormatFlags.Left | TextFormatFlags.WordEllipsis);
+
+				if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+					ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds);
 			};
 			cmbMessage.DisplayMember = "Original";
 
@@ -207,7 +239,16 @@ namespace TitanVision
 
 		private void UpdateInfoLabel()
 		{
-			lblInfo.Text = $"{currentTranslationFile.Description} ({currentTranslationFile.FileType}): {currentTranslationFile.Entries.Count(x => x.ID != -1 && string.Compare(x.Original, x.Translation) != 0)}/{currentTranslationFile.Entries.Count(x => x.ID != -1)} translated";
+			var stringBuilder = new StringBuilder();
+			stringBuilder.Append($"Current file: {Path.GetFileNameWithoutExtension(currentTranslationFile.RelativePath)} ({currentTranslationFile.Description})");
+			stringBuilder.Append(" - ");
+
+			var validEntryCount = currentTranslationFile.Entries.Count(x => x.ID != -1);
+			var ignoredEntryCount = currentTranslationFile.Entries.Count(x => x.ID != -1 && x.IsIgnored);
+			var translatedEntryCount = currentTranslationFile.Entries.Count(x => x.ID != -1 && string.Compare(x.Original, x.Translation) != 0);
+			stringBuilder.Append($"Translated {translatedEntryCount}/{validEntryCount - ignoredEntryCount} valid entries (additional {ignoredEntryCount} ignored)");
+
+			tsslStatus.Text = stringBuilder.ToString();
 		}
 
 		private void openDirectoryToolStripMenuItem_Click(object sender, EventArgs e)
@@ -254,7 +295,7 @@ namespace TitanVision
 
 			UpdateFormTitle();
 
-			saveDirectoryToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblInfo.Enabled = textEditorControl.Enabled = true;
+			saveDirectoryToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = true;
 		}
 
 		private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)

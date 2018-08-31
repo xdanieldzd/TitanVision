@@ -27,12 +27,14 @@ namespace TitanVision.Controls
 				txtOriginal.DataBindings.Clear();
 				txtTranslation.DataBindings.Clear();
 				txtTranslationNotes.DataBindings.Clear();
+				chkIsIgnored.DataBindings.Clear();
 
 				if (translatableEntry != null)
 				{
 					txtOriginal.DataBindings.Add("Text", TranslatableEntry, nameof(TranslatableEntry.Original), false, DataSourceUpdateMode.OnPropertyChanged);
 					txtTranslation.DataBindings.Add("Text", TranslatableEntry, nameof(TranslatableEntry.Translation), false, DataSourceUpdateMode.OnPropertyChanged);
 					txtTranslationNotes.DataBindings.Add("Text", TranslatableEntry, nameof(TranslatableEntry.Notes), false, DataSourceUpdateMode.OnPropertyChanged);
+					chkIsIgnored.DataBindings.Add("Checked", TranslatableEntry, nameof(TranslatableEntry.IsIgnored), false, DataSourceUpdateMode.OnPropertyChanged);
 				}
 
 				txtOriginal.SelectionStart = txtOriginal.Text.Length;

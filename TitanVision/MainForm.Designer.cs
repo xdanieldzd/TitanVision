@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			this.cmbMessage = new System.Windows.Forms.ComboBox();
-			this.lblInfo = new System.Windows.Forms.Label();
+			this.lblPreviewFont = new System.Windows.Forms.Label();
 			this.cmbFont = new System.Windows.Forms.ComboBox();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -38,42 +38,45 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.characterOverridesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.fontPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
-			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tspbProgress = new System.Windows.Forms.ToolStripProgressBar();
+			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
+			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
+			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
 			this.menuStrip.SuspendLayout();
 			this.statusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// cmbMessage
 			// 
-			this.cmbMessage.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.cmbMessage.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
+			this.cmbMessage.DropDownHeight = 250;
 			this.cmbMessage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbMessage.DropDownWidth = 400;
 			this.cmbMessage.Enabled = false;
 			this.cmbMessage.FormattingEnabled = true;
+			this.cmbMessage.IntegralHeight = false;
 			this.cmbMessage.Location = new System.Drawing.Point(252, 27);
 			this.cmbMessage.Name = "cmbMessage";
 			this.cmbMessage.Size = new System.Drawing.Size(300, 21);
 			this.cmbMessage.TabIndex = 0;
 			// 
-			// lblInfo
+			// lblPreviewFont
 			// 
-			this.lblInfo.AutoSize = true;
-			this.lblInfo.Enabled = false;
-			this.lblInfo.Location = new System.Drawing.Point(558, 30);
-			this.lblInfo.Name = "lblInfo";
-			this.lblInfo.Size = new System.Drawing.Size(16, 13);
-			this.lblInfo.TabIndex = 3;
-			this.lblInfo.Text = "---";
+			this.lblPreviewFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.lblPreviewFont.AutoSize = true;
+			this.lblPreviewFont.Enabled = false;
+			this.lblPreviewFont.Location = new System.Drawing.Point(940, 30);
+			this.lblPreviewFont.Name = "lblPreviewFont";
+			this.lblPreviewFont.Size = new System.Drawing.Size(76, 13);
+			this.lblPreviewFont.TabIndex = 3;
+			this.lblPreviewFont.Text = "Selected Font:";
 			// 
 			// cmbFont
 			// 
@@ -147,13 +150,6 @@
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
 			// 
-			// enableCharacterOverridesToolStripMenuItem
-			// 
-			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
-			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
-			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
-			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
-			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -188,31 +184,6 @@
 			this.aboutToolStripMenuItem.Text = "&About...";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
-			// tvTextFiles
-			// 
-			this.tvTextFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-			this.tvTextFiles.Enabled = false;
-			this.tvTextFiles.HideSelection = false;
-			this.tvTextFiles.Location = new System.Drawing.Point(12, 27);
-			this.tvTextFiles.Name = "tvTextFiles";
-			this.tvTextFiles.Size = new System.Drawing.Size(234, 625);
-			this.tvTextFiles.TabIndex = 2;
-			// 
-			// textEditorControl
-			// 
-			this.textEditorControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.textEditorControl.Enabled = false;
-			this.textEditorControl.GameRenderer = null;
-			this.textEditorControl.Location = new System.Drawing.Point(252, 54);
-			this.textEditorControl.Name = "textEditorControl";
-			this.textEditorControl.OverridesEnabled = false;
-			this.textEditorControl.Size = new System.Drawing.Size(920, 598);
-			this.textEditorControl.TabIndex = 1;
-			this.textEditorControl.TranslatableEntry = null;
-			// 
 			// statusStrip
 			// 
 			this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -239,6 +210,38 @@
 			this.tspbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.tspbProgress.Visible = false;
 			// 
+			// enableCharacterOverridesToolStripMenuItem
+			// 
+			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
+			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
+			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
+			// 
+			// tvTextFiles
+			// 
+			this.tvTextFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+			this.tvTextFiles.Enabled = false;
+			this.tvTextFiles.HideSelection = false;
+			this.tvTextFiles.Location = new System.Drawing.Point(12, 27);
+			this.tvTextFiles.Name = "tvTextFiles";
+			this.tvTextFiles.Size = new System.Drawing.Size(234, 625);
+			this.tvTextFiles.TabIndex = 2;
+			// 
+			// textEditorControl
+			// 
+			this.textEditorControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textEditorControl.Enabled = false;
+			this.textEditorControl.GameRenderer = null;
+			this.textEditorControl.Location = new System.Drawing.Point(252, 54);
+			this.textEditorControl.Name = "textEditorControl";
+			this.textEditorControl.OverridesEnabled = false;
+			this.textEditorControl.Size = new System.Drawing.Size(920, 598);
+			this.textEditorControl.TabIndex = 1;
+			this.textEditorControl.TranslatableEntry = null;
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -247,7 +250,7 @@
 			this.Controls.Add(this.statusStrip);
 			this.Controls.Add(this.menuStrip);
 			this.Controls.Add(this.cmbFont);
-			this.Controls.Add(this.lblInfo);
+			this.Controls.Add(this.lblPreviewFont);
 			this.Controls.Add(this.tvTextFiles);
 			this.Controls.Add(this.cmbMessage);
 			this.Controls.Add(this.textEditorControl);
@@ -269,7 +272,7 @@
 		private Controls.TextEditorControl textEditorControl;
 		private System.Windows.Forms.ComboBox cmbMessage;
 		private Controls.TreeViewEx tvTextFiles;
-		private System.Windows.Forms.Label lblInfo;
+		private System.Windows.Forms.Label lblPreviewFont;
 		private System.Windows.Forms.ComboBox cmbFont;
 		private System.Windows.Forms.MenuStrip menuStrip;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;

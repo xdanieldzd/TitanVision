@@ -261,6 +261,7 @@ namespace TitanVision
 				if (chrBytes[0] == 0x81 && chrBytes[1] == 0x40) { chrBytes[0] = 0x00; chrBytes[1] = 0x20; }
 
 				var chrCode = (ushort)(chrBytes[0] << 8 | chrBytes[1]);
+				if (!charMap.ContainsKey(chrCode)) chrCode = 0x8148;
 				var chrInfo = charMap[chrCode];
 
 				xPos += chrInfo.Left;

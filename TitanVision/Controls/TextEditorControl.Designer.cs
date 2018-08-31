@@ -29,19 +29,20 @@
 		private void InitializeComponent()
 		{
 			this.tlpPreviews = new System.Windows.Forms.TableLayoutPanel();
-			this.pnlOriginal = new System.Windows.Forms.Panel();
+			this.pnlOriginalImage = new System.Windows.Forms.Panel();
 			this.pbOriginal = new System.Windows.Forms.PictureBox();
-			this.panel1 = new System.Windows.Forms.Panel();
+			this.pnlTranslationImage = new System.Windows.Forms.Panel();
 			this.pbTranslation = new System.Windows.Forms.PictureBox();
 			this.pnlOriginalText = new System.Windows.Forms.Panel();
 			this.txtOriginal = new System.Windows.Forms.TextBox();
 			this.pnlTranslationText = new System.Windows.Forms.Panel();
 			this.txtTranslation = new System.Windows.Forms.TextBox();
 			this.txtTranslationNotes = new System.Windows.Forms.TextBox();
+			this.chkIsIgnored = new System.Windows.Forms.CheckBox();
 			this.tlpPreviews.SuspendLayout();
-			this.pnlOriginal.SuspendLayout();
+			this.pnlOriginalImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbOriginal)).BeginInit();
-			this.panel1.SuspendLayout();
+			this.pnlTranslationImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbTranslation)).BeginInit();
 			this.pnlOriginalText.SuspendLayout();
 			this.pnlTranslationText.SuspendLayout();
@@ -49,15 +50,18 @@
 			// 
 			// tlpPreviews
 			// 
-			this.tlpPreviews.ColumnCount = 3;
+			this.tlpPreviews.ColumnCount = 5;
 			this.tlpPreviews.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tlpPreviews.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
 			this.tlpPreviews.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 8F));
 			this.tlpPreviews.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-			this.tlpPreviews.Controls.Add(this.pnlOriginal, 0, 2);
-			this.tlpPreviews.Controls.Add(this.panel1, 2, 2);
+			this.tlpPreviews.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+			this.tlpPreviews.Controls.Add(this.pnlOriginalImage, 0, 2);
+			this.tlpPreviews.Controls.Add(this.pnlTranslationImage, 3, 2);
 			this.tlpPreviews.Controls.Add(this.pnlOriginalText, 0, 0);
-			this.tlpPreviews.Controls.Add(this.pnlTranslationText, 2, 0);
+			this.tlpPreviews.Controls.Add(this.pnlTranslationText, 3, 0);
 			this.tlpPreviews.Controls.Add(this.txtTranslationNotes, 0, 4);
+			this.tlpPreviews.Controls.Add(this.chkIsIgnored, 4, 4);
 			this.tlpPreviews.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.tlpPreviews.Location = new System.Drawing.Point(0, 0);
 			this.tlpPreviews.Margin = new System.Windows.Forms.Padding(0);
@@ -71,17 +75,18 @@
 			this.tlpPreviews.Size = new System.Drawing.Size(500, 400);
 			this.tlpPreviews.TabIndex = 3;
 			// 
-			// pnlOriginal
+			// pnlOriginalImage
 			// 
-			this.pnlOriginal.AutoScroll = true;
-			this.pnlOriginal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.pnlOriginal.Controls.Add(this.pbOriginal);
-			this.pnlOriginal.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlOriginal.Location = new System.Drawing.Point(0, 220);
-			this.pnlOriginal.Margin = new System.Windows.Forms.Padding(0);
-			this.pnlOriginal.Name = "pnlOriginal";
-			this.pnlOriginal.Size = new System.Drawing.Size(246, 141);
-			this.pnlOriginal.TabIndex = 0;
+			this.pnlOriginalImage.AutoScroll = true;
+			this.pnlOriginalImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tlpPreviews.SetColumnSpan(this.pnlOriginalImage, 2);
+			this.pnlOriginalImage.Controls.Add(this.pbOriginal);
+			this.pnlOriginalImage.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlOriginalImage.Location = new System.Drawing.Point(0, 220);
+			this.pnlOriginalImage.Margin = new System.Windows.Forms.Padding(0);
+			this.pnlOriginalImage.Name = "pnlOriginalImage";
+			this.pnlOriginalImage.Size = new System.Drawing.Size(246, 141);
+			this.pnlOriginalImage.TabIndex = 0;
 			// 
 			// pbOriginal
 			// 
@@ -94,17 +99,18 @@
 			this.pbOriginal.TabIndex = 3;
 			this.pbOriginal.TabStop = false;
 			// 
-			// panel1
+			// pnlTranslationImage
 			// 
-			this.panel1.AutoScroll = true;
-			this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.panel1.Controls.Add(this.pbTranslation);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(254, 220);
-			this.panel1.Margin = new System.Windows.Forms.Padding(0);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(246, 141);
-			this.panel1.TabIndex = 1;
+			this.pnlTranslationImage.AutoScroll = true;
+			this.pnlTranslationImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tlpPreviews.SetColumnSpan(this.pnlTranslationImage, 2);
+			this.pnlTranslationImage.Controls.Add(this.pbTranslation);
+			this.pnlTranslationImage.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlTranslationImage.Location = new System.Drawing.Point(254, 220);
+			this.pnlTranslationImage.Margin = new System.Windows.Forms.Padding(0);
+			this.pnlTranslationImage.Name = "pnlTranslationImage";
+			this.pnlTranslationImage.Size = new System.Drawing.Size(246, 141);
+			this.pnlTranslationImage.TabIndex = 1;
 			// 
 			// pbTranslation
 			// 
@@ -120,6 +126,7 @@
 			// pnlOriginalText
 			// 
 			this.pnlOriginalText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tlpPreviews.SetColumnSpan(this.pnlOriginalText, 2);
 			this.pnlOriginalText.Controls.Add(this.txtOriginal);
 			this.pnlOriginalText.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlOriginalText.Location = new System.Drawing.Point(0, 0);
@@ -144,6 +151,7 @@
 			// pnlTranslationText
 			// 
 			this.pnlTranslationText.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tlpPreviews.SetColumnSpan(this.pnlTranslationText, 2);
 			this.pnlTranslationText.Controls.Add(this.txtTranslation);
 			this.pnlTranslationText.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.pnlTranslationText.Location = new System.Drawing.Point(254, 0);
@@ -166,14 +174,26 @@
 			// 
 			// txtTranslationNotes
 			// 
-			this.tlpPreviews.SetColumnSpan(this.txtTranslationNotes, 3);
+			this.tlpPreviews.SetColumnSpan(this.txtTranslationNotes, 4);
 			this.txtTranslationNotes.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.txtTranslationNotes.Location = new System.Drawing.Point(0, 369);
 			this.txtTranslationNotes.Margin = new System.Windows.Forms.Padding(0);
 			this.txtTranslationNotes.Multiline = true;
 			this.txtTranslationNotes.Name = "txtTranslationNotes";
-			this.txtTranslationNotes.Size = new System.Drawing.Size(500, 31);
+			this.txtTranslationNotes.Size = new System.Drawing.Size(380, 31);
 			this.txtTranslationNotes.TabIndex = 11;
+			// 
+			// chkIsIgnored
+			// 
+			this.chkIsIgnored.AutoSize = true;
+			this.chkIsIgnored.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.chkIsIgnored.Location = new System.Drawing.Point(390, 372);
+			this.chkIsIgnored.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+			this.chkIsIgnored.Name = "chkIsIgnored";
+			this.chkIsIgnored.Size = new System.Drawing.Size(107, 25);
+			this.chkIsIgnored.TabIndex = 12;
+			this.chkIsIgnored.Text = "Ignored/Unused";
+			this.chkIsIgnored.UseVisualStyleBackColor = true;
 			// 
 			// TextEditorControl
 			// 
@@ -184,11 +204,11 @@
 			this.Size = new System.Drawing.Size(500, 400);
 			this.tlpPreviews.ResumeLayout(false);
 			this.tlpPreviews.PerformLayout();
-			this.pnlOriginal.ResumeLayout(false);
-			this.pnlOriginal.PerformLayout();
+			this.pnlOriginalImage.ResumeLayout(false);
+			this.pnlOriginalImage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbOriginal)).EndInit();
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
+			this.pnlTranslationImage.ResumeLayout(false);
+			this.pnlTranslationImage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pbTranslation)).EndInit();
 			this.pnlOriginalText.ResumeLayout(false);
 			this.pnlOriginalText.PerformLayout();
@@ -203,12 +223,13 @@
 		private System.Windows.Forms.TableLayoutPanel tlpPreviews;
 		private System.Windows.Forms.PictureBox pbTranslation;
 		private System.Windows.Forms.PictureBox pbOriginal;
-		private System.Windows.Forms.Panel pnlOriginal;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel pnlOriginalImage;
+		private System.Windows.Forms.Panel pnlTranslationImage;
 		private System.Windows.Forms.TextBox txtOriginal;
 		private System.Windows.Forms.TextBox txtTranslation;
 		private System.Windows.Forms.Panel pnlOriginalText;
 		private System.Windows.Forms.Panel pnlTranslationText;
 		private System.Windows.Forms.TextBox txtTranslationNotes;
+		private System.Windows.Forms.CheckBox chkIsIgnored;
 	}
 }
