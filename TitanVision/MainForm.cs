@@ -223,6 +223,8 @@ namespace TitanVision
 
 			tspbProgress.Visible = true;
 
+			EnableDisableUI(false);
+
 			Task task = Task.Factory.StartNew(() =>
 			{
 				var _lock = new object();
@@ -252,6 +254,8 @@ namespace TitanVision
 				});
 
 				renderers = renderers.OrderBy(x => config.FontPaths.FindIndex(y => Path.GetFileNameWithoutExtension(y) == x.FontName)).ToList();
+
+				substListsAssigned = false;
 			}, tokenSource.Token);
 
 			task.ContinueWith((t) =>
@@ -265,6 +269,8 @@ namespace TitanVision
 					cmbFont.DataSource = renderers;
 
 					fontsReady = true;
+
+					EnableDisableUI(dataLoaded && fontsReady);
 				});
 			});
 		}
@@ -337,6 +343,8 @@ namespace TitanVision
 
 		private void OpenData(string rootDirectory)
 		{
+			EnableDisableUI(false);
+
 			config.JsonRootDirectory = rootDirectory;
 
 			enemyNames = LoadStringSubstJson(Path.Combine(config.JsonRootDirectory, @"Monster\Table\enemynametable.json"));
@@ -377,7 +385,12 @@ namespace TitanVision
 
 			UpdateFormTitle();
 
-			saveToolStripMenuItem.Enabled = saveAllToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = true;
+			EnableDisableUI(dataLoaded && fontsReady);
+		}
+
+		private void EnableDisableUI(bool state)
+		{
+			saveToolStripMenuItem.Enabled = saveAllToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = state;
 		}
 
 		private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
