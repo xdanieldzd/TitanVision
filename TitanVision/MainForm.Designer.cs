@@ -28,7 +28,6 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.cmbMessage = new System.Windows.Forms.ComboBox();
 			this.lblPreviewFont = new System.Windows.Forms.Label();
 			this.cmbFont = new System.Windows.Forms.ComboBox();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
@@ -40,7 +39,6 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.characterOverridesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.fontPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,36 +47,24 @@
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tspbProgress = new System.Windows.Forms.ToolStripProgressBar();
+			this.lbMessages = new System.Windows.Forms.ListBox();
+			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
 			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
 			this.menuStrip.SuspendLayout();
 			this.statusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// cmbMessage
-			// 
-			this.cmbMessage.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawVariable;
-			this.cmbMessage.DropDownHeight = 500;
-			this.cmbMessage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.cmbMessage.DropDownWidth = 400;
-			this.cmbMessage.Enabled = false;
-			this.cmbMessage.IntegralHeight = false;
-			this.cmbMessage.Location = new System.Drawing.Point(302, 27);
-			this.cmbMessage.MaxDropDownItems = 32;
-			this.cmbMessage.Name = "cmbMessage";
-			this.cmbMessage.Size = new System.Drawing.Size(300, 21);
-			this.cmbMessage.TabIndex = 0;
-			// 
 			// lblPreviewFont
 			// 
 			this.lblPreviewFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.lblPreviewFont.AutoSize = true;
 			this.lblPreviewFont.Enabled = false;
-			this.lblPreviewFont.Location = new System.Drawing.Point(990, 30);
+			this.lblPreviewFont.Location = new System.Drawing.Point(12, 628);
 			this.lblPreviewFont.Name = "lblPreviewFont";
-			this.lblPreviewFont.Size = new System.Drawing.Size(76, 13);
+			this.lblPreviewFont.Size = new System.Drawing.Size(31, 13);
 			this.lblPreviewFont.TabIndex = 3;
-			this.lblPreviewFont.Text = "Selected Font:";
+			this.lblPreviewFont.Text = "Font:";
 			// 
 			// cmbFont
 			// 
@@ -86,7 +72,8 @@
 			this.cmbFont.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbFont.Enabled = false;
 			this.cmbFont.FormattingEnabled = true;
-			this.cmbFont.Location = new System.Drawing.Point(1072, 27);
+			this.cmbFont.Location = new System.Drawing.Point(117, 625);
+			this.cmbFont.Margin = new System.Windows.Forms.Padding(3, 9, 3, 9);
 			this.cmbFont.Name = "cmbFont";
 			this.cmbFont.Size = new System.Drawing.Size(150, 21);
 			this.cmbFont.TabIndex = 4;
@@ -169,13 +156,6 @@
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
 			// 
-			// enableCharacterOverridesToolStripMenuItem
-			// 
-			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
-			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
-			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
-			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
-			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -236,6 +216,23 @@
 			this.tspbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.tspbProgress.Visible = false;
 			// 
+			// lbMessages
+			// 
+			this.lbMessages.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+			this.lbMessages.FormattingEnabled = true;
+			this.lbMessages.IntegralHeight = false;
+			this.lbMessages.Location = new System.Drawing.Point(273, 27);
+			this.lbMessages.Name = "lbMessages";
+			this.lbMessages.Size = new System.Drawing.Size(208, 625);
+			this.lbMessages.TabIndex = 7;
+			// 
+			// enableCharacterOverridesToolStripMenuItem
+			// 
+			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
+			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
+			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
+			// 
 			// tvTextFiles
 			// 
 			this.tvTextFiles.DrawMode = System.Windows.Forms.TreeViewDrawMode.OwnerDrawText;
@@ -244,7 +241,7 @@
 			this.tvTextFiles.Location = new System.Drawing.Point(12, 27);
 			this.tvTextFiles.Name = "tvTextFiles";
 			this.tvTextFiles.ShowLines = false;
-			this.tvTextFiles.Size = new System.Drawing.Size(284, 625);
+			this.tvTextFiles.Size = new System.Drawing.Size(255, 586);
 			this.tvTextFiles.TabIndex = 2;
 			// 
 			// textEditorControl
@@ -254,10 +251,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.textEditorControl.Enabled = false;
 			this.textEditorControl.GameRenderer = null;
-			this.textEditorControl.Location = new System.Drawing.Point(302, 54);
+			this.textEditorControl.Location = new System.Drawing.Point(487, 27);
 			this.textEditorControl.Name = "textEditorControl";
 			this.textEditorControl.OverridesEnabled = false;
-			this.textEditorControl.Size = new System.Drawing.Size(920, 598);
+			this.textEditorControl.Size = new System.Drawing.Size(735, 625);
 			this.textEditorControl.TabIndex = 1;
 			this.textEditorControl.TranslatableEntry = null;
 			// 
@@ -266,12 +263,12 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1234, 677);
+			this.Controls.Add(this.lbMessages);
 			this.Controls.Add(this.statusStrip);
 			this.Controls.Add(this.menuStrip);
 			this.Controls.Add(this.cmbFont);
 			this.Controls.Add(this.lblPreviewFont);
 			this.Controls.Add(this.tvTextFiles);
-			this.Controls.Add(this.cmbMessage);
 			this.Controls.Add(this.textEditorControl);
 			this.DoubleBuffered = true;
 			this.MainMenuStrip = this.menuStrip;
@@ -289,7 +286,6 @@
 
 		#endregion
 		private Controls.TextEditorControl textEditorControl;
-		private System.Windows.Forms.ComboBox cmbMessage;
 		private Controls.TreeViewEx tvTextFiles;
 		private System.Windows.Forms.Label lblPreviewFont;
 		private System.Windows.Forms.ComboBox cmbFont;
@@ -311,6 +307,7 @@
 		private System.Windows.Forms.ToolStripProgressBar tspbProgress;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
+		private System.Windows.Forms.ListBox lbMessages;
 	}
 }
 

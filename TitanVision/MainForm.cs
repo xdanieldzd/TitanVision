@@ -111,78 +111,50 @@ namespace TitanVision
 					e.Graphics.FillRectangle(SystemBrushes.Highlight, e.Node.Bounds);
 					TextRenderer.DrawText(e.Graphics, e.Node.Text, font, textBounds, SystemColors.HighlightText, textFormatFlags);
 				}
+
+				if (selected)
+					ControlPaint.DrawFocusRectangle(e.Graphics, e.Node.Bounds);
 			};
 
-			cmbMessage.SelectedIndexChanged += (s, e) =>
+			lbMessages.SelectedIndexChanged += (s, e) =>
 			{
-				if (cmbMessage.SelectedItem != null)
+				if (lbMessages.SelectedItem != null)
 				{
-					(cmbMessage.SelectedItem as TranslatableEntry).PropertyChanged -= MainForm_PropertyChanged;
-					(cmbMessage.SelectedItem as TranslatableEntry).PropertyChanged += MainForm_PropertyChanged;
+					(lbMessages.SelectedItem as TranslatableEntry).PropertyChanged -= MainForm_PropertyChanged;
+					(lbMessages.SelectedItem as TranslatableEntry).PropertyChanged += MainForm_PropertyChanged;
 				}
 
 				UpdateTextEditor();
 			};
-			cmbMessage.MeasureItem += (s, e) =>
-			{
-				var comboBox = (s as ComboBox);
-				var entry = (comboBox.Items[e.Index] as TranslatableEntry);
-
-				var lines = entry.OriginalArray.Take(3).Where(x => !string.IsNullOrEmpty(x));
-
-				var joined = string.Join(Environment.NewLine, lines);
-				if (string.IsNullOrEmpty(joined)) joined = "(Invalid)";
-
-				var size = TextRenderer.MeasureText(joined, comboBox.Font);
-				e.ItemHeight = (size.Height + 6);
-			};
-			cmbMessage.DrawItem += (s, e) =>
+			lbMessages.DrawItem += (s, e) =>
 			{
 				if (e.Index == -1) return;
 
-				var entry = ((s as ComboBox).Items[e.Index] as TranslatableEntry);
+				var entry = ((s as ListBox).Items[e.Index] as TranslatableEntry);
 
-				string label;
-				Rectangle rectangle;
+				var selected = ((e.State & DrawItemState.Selected) == DrawItemState.Selected);
+				var unfocused = (!(s as ListBox).Focused);
+				var font = (e.Font ?? (s as ListBox).Font);
 
-				var paddedRect = new Rectangle(e.Bounds.X, (e.Bounds.Y + 2), e.Bounds.Width, (e.Bounds.Height - 4));
+				var textFormatFlags = (TextFormatFlags.Left | TextFormatFlags.WordEllipsis);
 
-				if (entry.ID == -1)
+				var label = ((entry.ID == -1) ? "(Invalid)" : $"#{entry.ID:D3}: {entry.Original.TrimEnd(Environment.NewLine.ToCharArray()).Replace(Environment.NewLine, " ")}");
+
+				if (!selected)
 				{
-					label = "(Invalid)";
-					if ((e.State & DrawItemState.ComboBoxEdit) == DrawItemState.ComboBoxEdit)
-						rectangle = e.Bounds;
-					else
-						rectangle = paddedRect;
+					e.Graphics.FillRectangle(((entry.ID == -1) ? invalidOrNothingBrush : (entry.IsIgnored ? ignoredBrush : ((string.Compare(entry.Original, entry.Translation) == 0) ? notTranslatedBrush : translatedBrush))), e.Bounds);
+					TextRenderer.DrawText(e.Graphics, label, e.Font, e.Bounds, SystemColors.ControlText, textFormatFlags);
 				}
 				else
 				{
-					var text = entry.Original.TrimEnd(Environment.NewLine.ToCharArray());
-					if ((e.State & DrawItemState.ComboBoxEdit) == DrawItemState.ComboBoxEdit)
-					{
-						label = $"#{entry.ID:D3}: {text.Replace(Environment.NewLine, " ")}";
-						rectangle = e.Bounds;
-					}
-					else
-					{
-						label = text;
-						rectangle = paddedRect;
-					}
+					e.Graphics.FillRectangle((unfocused ? SystemBrushes.Control : SystemBrushes.Highlight), e.Bounds);
+					TextRenderer.DrawText(e.Graphics, label, font, e.Bounds, (unfocused ? SystemColors.ControlText : SystemColors.HighlightText), textFormatFlags);
 				}
 
-				e.Graphics.FillRectangle(
-					((entry.ID == -1) ? invalidOrNothingBrush :
-					(entry.IsIgnored ? ignoredBrush :
-					((string.Compare(entry.Original, entry.Translation) == 0) ? notTranslatedBrush :
-					translatedBrush))),
-					e.Bounds);
-
-				TextRenderer.DrawText(e.Graphics, label, e.Font, rectangle, SystemColors.ControlText, TextFormatFlags.Left | TextFormatFlags.WordEllipsis);
-
-				if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+				if (selected)
 					ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds);
 			};
-			cmbMessage.DisplayMember = "Original";
+			lbMessages.DisplayMember = "Original";
 
 			cmbFont.SelectedIndexChanged += (s, e) =>
 			{
@@ -297,8 +269,8 @@ namespace TitanVision
 
 			textEditorControl.DataBindings.Clear();
 
-			if (cmbMessage.SelectedItem != null)
-				textEditorControl.DataBindings.Add(nameof(textEditorControl.TranslatableEntry), cmbMessage, nameof(cmbMessage.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
+			if (lbMessages.SelectedItem != null)
+				textEditorControl.DataBindings.Add(nameof(textEditorControl.TranslatableEntry), lbMessages, nameof(lbMessages.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
 
 			if (cmbFont.SelectedItem != null)
 				textEditorControl.DataBindings.Add(nameof(textEditorControl.GameRenderer), cmbFont, nameof(cmbFont.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -374,7 +346,7 @@ namespace TitanVision
 
 					currentFilePath = path;
 					currentTranslationFile = translation;
-					cmbMessage.DataSource = currentTranslationFile.Entries;
+					lbMessages.DataSource = currentTranslationFile.Entries;
 					UpdateInfoLabel();
 				}
 			};
@@ -390,7 +362,7 @@ namespace TitanVision
 
 		private void EnableDisableUI(bool state)
 		{
-			saveToolStripMenuItem.Enabled = saveAllToolStripMenuItem.Enabled = tvTextFiles.Enabled = cmbMessage.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = state;
+			saveToolStripMenuItem.Enabled = saveAllToolStripMenuItem.Enabled = tvTextFiles.Enabled = lbMessages.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = state;
 		}
 
 		private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
@@ -452,7 +424,7 @@ namespace TitanVision
 
 		private void MainForm_PropertyChanged(object sender, PropertyChangedEventArgs e)
 		{
-			cmbMessage.Invalidate();
+			lbMessages.Invalidate();
 			tvTextFiles.Invalidate();
 			textEditorControl.ForceRedrawPreviews();
 
