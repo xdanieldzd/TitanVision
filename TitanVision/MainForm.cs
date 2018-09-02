@@ -154,7 +154,6 @@ namespace TitanVision
 				if (selected)
 					ControlPaint.DrawFocusRectangle(e.Graphics, e.Bounds);
 			};
-			lbMessages.DisplayMember = "Original";
 
 			cmbFont.SelectedIndexChanged += (s, e) =>
 			{

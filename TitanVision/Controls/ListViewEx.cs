@@ -10,17 +10,7 @@ namespace TitanVision.Controls
 {
 	public class ListViewEx : ListView
 	{
-		public ListViewEx() : base()
-		{
-			SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint | ControlStyles.EnableNotifyMessage, true);
-		}
-
-		protected override void OnNotifyMessage(Message m)
-		{
-			// Ignore WM_ERASEBKGND
-			if (m.Msg != 0x14)
-				base.OnNotifyMessage(m);
-		}
+		public ListViewEx() : base() { }
 
 		[DllImport("uxtheme.dll", CharSet = CharSet.Unicode)]
 		public extern static int SetWindowTheme(IntPtr hWnd, string pszSubAppName, string pszSubIdList);

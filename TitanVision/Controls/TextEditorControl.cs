@@ -14,6 +14,16 @@ namespace TitanVision.Controls
 {
 	public partial class TextEditorControl : UserControl
 	{
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				CreateParams cp = base.CreateParams;
+				cp.ExStyle |= 0x02000000;
+				return cp;
+			}
+		}
+
 		public GameRenderer GameRenderer { get; set; }
 
 		TranslatableEntry translatableEntry;
@@ -52,19 +62,22 @@ namespace TitanVision.Controls
 
 			SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.OptimizedDoubleBuffer | ControlStyles.Opaque, true);
 			DoubleBuffered = true;
+
+			pnlOriginalImage.Paint += (s, e) => { RedrawPreview(e.Graphics, (s as Panel), TranslatableEntry?.Original); };
+			pnlTranslationImage.Paint += (s, e) => { RedrawPreview(e.Graphics, (s as Panel), TranslatableEntry?.Translation); };
+		}
+
+		private void RedrawPreview(Graphics g, Panel panel, string text)
+		{
+			g.TranslateTransform(panel.AutoScrollPosition.X, panel.AutoScrollPosition.Y);
+			panel.AutoScrollMinSize = new Size((panel.ClientSize.Width - SystemInformation.VerticalScrollBarWidth), GameRenderer?.MeasureStringHeight(text) ?? panel.ClientSize.Height);
+			GameRenderer?.DrawString(g, text, OverridesEnabled);
 		}
 
 		public void ForceRedrawPreviews()
 		{
-			if (GameRenderer == null || TranslatableEntry == null) return;
-
-			var oldOriginalImage = pbOriginal.Image;
-			pbOriginal.Image = GameRenderer.GetBitmap(TranslatableEntry.Original, OverridesEnabled);
-			oldOriginalImage?.Dispose();
-
-			var oldTranslationImage = pbTranslation.Image;
-			pbTranslation.Image = GameRenderer.GetBitmap(TranslatableEntry.Translation, OverridesEnabled);
-			oldTranslationImage?.Dispose();
+			pnlOriginalImage.Invalidate();
+			pnlTranslationImage.Invalidate();
 		}
 	}
 }

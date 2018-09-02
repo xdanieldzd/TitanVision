@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
 
 using TitanVision.DataReaders;
 
@@ -142,7 +143,7 @@ namespace TitanVision
 			if (str == null || str.Length == 0)
 				return new Bitmap(32, 32, PixelFormat.Format32bppArgb);
 
-			var image = new Bitmap(2048, Math.Max(1, (str.Length - str.Replace(Environment.NewLine, "").Length)) * cellSize.Height, PixelFormat.Format32bppArgb);
+			var image = new Bitmap(2048, MeasureStringHeight(str), PixelFormat.Format32bppArgb);
 			using (Graphics g = Graphics.FromImage(image))
 			{
 				DrawString(g, str, enableOverrides);
@@ -197,6 +198,13 @@ namespace TitanVision
 			}
 
 			return cropped;
+		}
+
+		public int MeasureStringHeight(string str)
+		{
+			var strStripPage = str.Replace($"{controlCodeBegin}{controlCodePageBreak}{controlCodeEnd}{Environment.NewLine}", string.Empty);
+			var strLineCount = Regex.Matches(strStripPage, Environment.NewLine).Count;
+			return (Math.Max(1, strLineCount * cellSize.Height));
 		}
 
 		// this function is voodoo and I don't mean 3dfx

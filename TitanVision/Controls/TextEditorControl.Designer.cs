@@ -29,21 +29,15 @@
 		private void InitializeComponent()
 		{
 			this.tlpPreviews = new System.Windows.Forms.TableLayoutPanel();
-			this.pnlOriginalImage = new System.Windows.Forms.Panel();
-			this.pbOriginal = new System.Windows.Forms.PictureBox();
-			this.pnlTranslationImage = new System.Windows.Forms.Panel();
-			this.pbTranslation = new System.Windows.Forms.PictureBox();
 			this.pnlOriginalText = new System.Windows.Forms.Panel();
 			this.txtOriginal = new System.Windows.Forms.TextBox();
 			this.pnlTranslationText = new System.Windows.Forms.Panel();
 			this.txtTranslation = new System.Windows.Forms.TextBox();
 			this.txtTranslationNotes = new System.Windows.Forms.TextBox();
 			this.chkIsIgnored = new System.Windows.Forms.CheckBox();
+			this.pnlOriginalImage = new TitanVision.Controls.PanelEx();
+			this.pnlTranslationImage = new TitanVision.Controls.PanelEx();
 			this.tlpPreviews.SuspendLayout();
-			this.pnlOriginalImage.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbOriginal)).BeginInit();
-			this.pnlTranslationImage.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbTranslation)).BeginInit();
 			this.pnlOriginalText.SuspendLayout();
 			this.pnlTranslationText.SuspendLayout();
 			this.SuspendLayout();
@@ -74,54 +68,6 @@
 			this.tlpPreviews.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
 			this.tlpPreviews.Size = new System.Drawing.Size(500, 400);
 			this.tlpPreviews.TabIndex = 3;
-			// 
-			// pnlOriginalImage
-			// 
-			this.pnlOriginalImage.AutoScroll = true;
-			this.pnlOriginalImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.tlpPreviews.SetColumnSpan(this.pnlOriginalImage, 2);
-			this.pnlOriginalImage.Controls.Add(this.pbOriginal);
-			this.pnlOriginalImage.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlOriginalImage.Location = new System.Drawing.Point(0, 220);
-			this.pnlOriginalImage.Margin = new System.Windows.Forms.Padding(0);
-			this.pnlOriginalImage.Name = "pnlOriginalImage";
-			this.pnlOriginalImage.Size = new System.Drawing.Size(246, 141);
-			this.pnlOriginalImage.TabIndex = 0;
-			// 
-			// pbOriginal
-			// 
-			this.pbOriginal.BackColor = System.Drawing.Color.Transparent;
-			this.pbOriginal.Location = new System.Drawing.Point(0, 0);
-			this.pbOriginal.Margin = new System.Windows.Forms.Padding(0);
-			this.pbOriginal.Name = "pbOriginal";
-			this.pbOriginal.Size = new System.Drawing.Size(140, 150);
-			this.pbOriginal.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-			this.pbOriginal.TabIndex = 3;
-			this.pbOriginal.TabStop = false;
-			// 
-			// pnlTranslationImage
-			// 
-			this.pnlTranslationImage.AutoScroll = true;
-			this.pnlTranslationImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.tlpPreviews.SetColumnSpan(this.pnlTranslationImage, 2);
-			this.pnlTranslationImage.Controls.Add(this.pbTranslation);
-			this.pnlTranslationImage.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.pnlTranslationImage.Location = new System.Drawing.Point(254, 220);
-			this.pnlTranslationImage.Margin = new System.Windows.Forms.Padding(0);
-			this.pnlTranslationImage.Name = "pnlTranslationImage";
-			this.pnlTranslationImage.Size = new System.Drawing.Size(246, 141);
-			this.pnlTranslationImage.TabIndex = 1;
-			// 
-			// pbTranslation
-			// 
-			this.pbTranslation.BackColor = System.Drawing.Color.Transparent;
-			this.pbTranslation.Location = new System.Drawing.Point(0, 0);
-			this.pbTranslation.Margin = new System.Windows.Forms.Padding(0);
-			this.pbTranslation.Name = "pbTranslation";
-			this.pbTranslation.Size = new System.Drawing.Size(140, 150);
-			this.pbTranslation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-			this.pbTranslation.TabIndex = 4;
-			this.pbTranslation.TabStop = false;
 			// 
 			// pnlOriginalText
 			// 
@@ -195,6 +141,30 @@
 			this.chkIsIgnored.Text = "Ignored/Unused";
 			this.chkIsIgnored.UseVisualStyleBackColor = true;
 			// 
+			// pnlOriginalImage
+			// 
+			this.pnlOriginalImage.AutoScroll = true;
+			this.pnlOriginalImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tlpPreviews.SetColumnSpan(this.pnlOriginalImage, 2);
+			this.pnlOriginalImage.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlOriginalImage.Location = new System.Drawing.Point(0, 220);
+			this.pnlOriginalImage.Margin = new System.Windows.Forms.Padding(0);
+			this.pnlOriginalImage.Name = "pnlOriginalImage";
+			this.pnlOriginalImage.Size = new System.Drawing.Size(246, 141);
+			this.pnlOriginalImage.TabIndex = 0;
+			// 
+			// pnlTranslationImage
+			// 
+			this.pnlTranslationImage.AutoScroll = true;
+			this.pnlTranslationImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.tlpPreviews.SetColumnSpan(this.pnlTranslationImage, 2);
+			this.pnlTranslationImage.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnlTranslationImage.Location = new System.Drawing.Point(254, 220);
+			this.pnlTranslationImage.Margin = new System.Windows.Forms.Padding(0);
+			this.pnlTranslationImage.Name = "pnlTranslationImage";
+			this.pnlTranslationImage.Size = new System.Drawing.Size(246, 141);
+			this.pnlTranslationImage.TabIndex = 1;
+			// 
 			// TextEditorControl
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -204,12 +174,6 @@
 			this.Size = new System.Drawing.Size(500, 400);
 			this.tlpPreviews.ResumeLayout(false);
 			this.tlpPreviews.PerformLayout();
-			this.pnlOriginalImage.ResumeLayout(false);
-			this.pnlOriginalImage.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbOriginal)).EndInit();
-			this.pnlTranslationImage.ResumeLayout(false);
-			this.pnlTranslationImage.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pbTranslation)).EndInit();
 			this.pnlOriginalText.ResumeLayout(false);
 			this.pnlOriginalText.PerformLayout();
 			this.pnlTranslationText.ResumeLayout(false);
@@ -221,10 +185,8 @@
 		#endregion
 
 		private System.Windows.Forms.TableLayoutPanel tlpPreviews;
-		private System.Windows.Forms.PictureBox pbTranslation;
-		private System.Windows.Forms.PictureBox pbOriginal;
-		private System.Windows.Forms.Panel pnlOriginalImage;
-		private System.Windows.Forms.Panel pnlTranslationImage;
+		private Controls.PanelEx pnlOriginalImage;
+		private Controls.PanelEx pnlTranslationImage;
 		private System.Windows.Forms.TextBox txtOriginal;
 		private System.Windows.Forms.TextBox txtTranslation;
 		private System.Windows.Forms.Panel pnlOriginalText;

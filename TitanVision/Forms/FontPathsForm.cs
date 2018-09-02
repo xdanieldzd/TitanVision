@@ -14,6 +14,16 @@ namespace TitanVision.Forms
 {
 	public partial class FontPathsForm : Form
 	{
+		protected override CreateParams CreateParams
+		{
+			get
+			{
+				CreateParams cp = base.CreateParams;
+				cp.ExStyle |= 0x02000000;
+				return cp;
+			}
+		}
+
 		const string bcfntFilter = "3DS Font Files|*.bcfnt";
 
 		List<string> sourcePathList;
