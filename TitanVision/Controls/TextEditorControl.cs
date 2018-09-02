@@ -49,8 +49,6 @@ namespace TitanVision.Controls
 
 				txtOriginal.SelectionStart = txtOriginal.Text.Length;
 				txtOriginal.DeselectAll();
-
-				ForceRedrawPreviews();
 			}
 		}
 
@@ -72,12 +70,6 @@ namespace TitanVision.Controls
 			g.TranslateTransform(panel.AutoScrollPosition.X, panel.AutoScrollPosition.Y);
 			panel.AutoScrollMinSize = new Size((panel.ClientSize.Width - SystemInformation.VerticalScrollBarWidth), GameRenderer?.MeasureStringHeight(text) ?? panel.ClientSize.Height);
 			GameRenderer?.DrawString(g, text, OverridesEnabled);
-		}
-
-		public void ForceRedrawPreviews()
-		{
-			pnlOriginalImage.Invalidate();
-			pnlTranslationImage.Invalidate();
 		}
 	}
 }

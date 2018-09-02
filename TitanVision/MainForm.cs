@@ -57,7 +57,7 @@ namespace TitanVision
 
 			enableCharacterOverridesToolStripMenuItem.CheckedChanged += (s, e) =>
 			{
-				textEditorControl.ForceRedrawPreviews();
+				textEditorControl.Invalidate();
 			};
 
 			tvTextFiles.DrawNode += (s, e) =>
@@ -276,7 +276,7 @@ namespace TitanVision
 
 			textEditorControl.DataBindings.Add(nameof(textEditorControl.OverridesEnabled), config, nameof(config.OverridesEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
 
-			textEditorControl.ForceRedrawPreviews();
+			textEditorControl.Invalidate();
 		}
 
 		private void UpdateFormTitle()
@@ -394,7 +394,7 @@ namespace TitanVision
 			var characterOverrideForm = new CharacterOverrideForm(config.CharacterOverrides);
 			characterOverrideForm.ShowDialog();
 
-			textEditorControl.ForceRedrawPreviews();
+			textEditorControl.Invalidate();
 		}
 
 		private void fontPathsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -425,7 +425,7 @@ namespace TitanVision
 		{
 			lbMessages.Invalidate();
 			tvTextFiles.Invalidate();
-			textEditorControl.ForceRedrawPreviews();
+			textEditorControl.Invalidate();
 
 			UpdateInfoLabel();
 		}
