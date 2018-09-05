@@ -24,6 +24,9 @@ namespace TitanVision.Controls
 			}
 		}
 
+		readonly static Pen markerPenBlack = new Pen(Color.Black, 3.0f);
+		readonly static Pen markerPenOrange = new Pen(Color.DarkOrange, 3.0f);
+
 		public GameRenderer GameRenderer { get; set; }
 
 		TranslatableEntry translatableEntry;
@@ -54,6 +57,8 @@ namespace TitanVision.Controls
 
 		public bool OverridesEnabled { get; set; }
 
+		public KeyValuePair<string, int> LimitMarkerWidth { get; set; }
+
 		public TextEditorControl()
 		{
 			InitializeComponent();
@@ -70,6 +75,13 @@ namespace TitanVision.Controls
 			g.TranslateTransform(panel.AutoScrollPosition.X, panel.AutoScrollPosition.Y);
 			panel.AutoScrollMinSize = new Size((panel.ClientSize.Width - SystemInformation.VerticalScrollBarWidth), GameRenderer?.MeasureStringHeight(text) ?? panel.ClientSize.Height);
 			GameRenderer?.DrawString(g, text, OverridesEnabled);
+			DrawLimitMarker(g, panel, text);
+		}
+
+		private void DrawLimitMarker(Graphics g, Panel panel, string text)
+		{
+			if (LimitMarkerWidth.Value != 0)
+				g.DrawLine((GameRenderer.HasVariableLengthControlCodes(text) ? markerPenOrange : markerPenBlack), LimitMarkerWidth.Value, 0, LimitMarkerWidth.Value, panel.AutoScrollMinSize.Height);
 		}
 	}
 }

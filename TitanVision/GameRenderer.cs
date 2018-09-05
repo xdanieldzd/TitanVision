@@ -59,6 +59,8 @@ namespace TitanVision
 			{ "Color", PostProcessColor },
 		};
 
+		static readonly string variableControlCodeRegexPattern = (@"\" + controlCodeBegin + @"((?!" + string.Join("|", postProcessFunctions.Select(x => x.Key + "\\b")) + @").*?)\" + controlCodeEnd);
+
 		static ImageAttributes imageAttributes;
 		static float[][] colorMatrix;
 
@@ -138,6 +140,11 @@ namespace TitanVision
 			imageAttributes.SetColorMatrix(new ColorMatrix(colorMatrix), ColorMatrixFlag.Default, ColorAdjustType.Bitmap);
 		}
 
+		public bool HasVariableLengthControlCodes(string str)
+		{
+			return (Regex.Match(str, variableControlCodeRegexPattern).Length > 0);
+		}
+
 		public Bitmap GetBitmap(string str, bool enableOverrides = false)
 		{
 			if (str == null || str.Length == 0)
@@ -202,6 +209,8 @@ namespace TitanVision
 
 		public int MeasureStringHeight(string str)
 		{
+			if (str == null) return 1;
+
 			var strStripPage = str.Replace($"{controlCodeBegin}{controlCodePageBreak}{controlCodeEnd}{Environment.NewLine}", string.Empty);
 			var strLineCount = Regex.Matches(strStripPage, Environment.NewLine).Count;
 			return (Math.Max(1, strLineCount * cellSize.Height));
@@ -212,6 +221,8 @@ namespace TitanVision
 		public void DrawString(Graphics g, string str, bool enableOverrides = false)
 		{
 			ResetRenderMisc();
+
+			if (str == null) return;
 
 			for (int idx = 0, xPos = 0, yPos = 0; idx < str.Length; idx++)
 			{

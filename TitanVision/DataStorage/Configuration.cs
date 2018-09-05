@@ -12,6 +12,7 @@ namespace TitanVision.DataStorage
 		public List<string> FontPaths { get; set; }
 		public bool OverridesEnabled { get; set; }
 		public Dictionary<char, char> CharacterOverrides { get; set; }
+		public Dictionary<string, int> TextMarkerWidths { get; set; }
 
 		public Configuration()
 		{
@@ -19,6 +20,7 @@ namespace TitanVision.DataStorage
 			FontPaths = new List<string>();
 			OverridesEnabled = false;
 			CharacterOverrides = new Dictionary<char, char>();
+			TextMarkerWidths = new Dictionary<string, int>();
 		}
 	}
 }

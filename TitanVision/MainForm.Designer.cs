@@ -28,7 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.lblPreviewFont = new System.Windows.Forms.Label();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+			this.lblFont = new System.Windows.Forms.Label();
 			this.cmbFont = new System.Windows.Forms.ComboBox();
 			this.menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -39,7 +40,6 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.characterOverridesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.fontPathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -48,23 +48,26 @@
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
 			this.tsslStatus = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tspbProgress = new System.Windows.Forms.ToolStripProgressBar();
+			this.cmbMarkerWidths = new System.Windows.Forms.ComboBox();
+			this.lblMarkerWidths = new System.Windows.Forms.Label();
 			this.lbMessages = new TitanVision.Controls.ListBoxEx();
+			this.enableCharacterOverridesToolStripMenuItem = new TitanVision.Controls.BindableToolStripMenuItem();
 			this.tvTextFiles = new TitanVision.Controls.TreeViewEx();
 			this.textEditorControl = new TitanVision.Controls.TextEditorControl();
 			this.menuStrip.SuspendLayout();
 			this.statusStrip.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// lblPreviewFont
+			// lblFont
 			// 
-			this.lblPreviewFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-			this.lblPreviewFont.AutoSize = true;
-			this.lblPreviewFont.Enabled = false;
-			this.lblPreviewFont.Location = new System.Drawing.Point(12, 633);
-			this.lblPreviewFont.Name = "lblPreviewFont";
-			this.lblPreviewFont.Size = new System.Drawing.Size(31, 13);
-			this.lblPreviewFont.TabIndex = 3;
-			this.lblPreviewFont.Text = "Font:";
+			this.lblFont.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.lblFont.AutoSize = true;
+			this.lblFont.Enabled = false;
+			this.lblFont.Location = new System.Drawing.Point(12, 594);
+			this.lblFont.Name = "lblFont";
+			this.lblFont.Size = new System.Drawing.Size(31, 13);
+			this.lblFont.TabIndex = 3;
+			this.lblFont.Text = "Font:";
 			// 
 			// cmbFont
 			// 
@@ -72,7 +75,7 @@
 			this.cmbFont.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbFont.Enabled = false;
 			this.cmbFont.FormattingEnabled = true;
-			this.cmbFont.Location = new System.Drawing.Point(117, 630);
+			this.cmbFont.Location = new System.Drawing.Point(117, 591);
 			this.cmbFont.Margin = new System.Windows.Forms.Padding(3, 9, 3, 9);
 			this.cmbFont.Name = "cmbFont";
 			this.cmbFont.Size = new System.Drawing.Size(150, 21);
@@ -156,13 +159,6 @@
 			this.toolsToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
 			this.toolsToolStripMenuItem.Text = "&Tools";
 			// 
-			// enableCharacterOverridesToolStripMenuItem
-			// 
-			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
-			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
-			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
-			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
-			// 
 			// toolStripMenuItem1
 			// 
 			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
@@ -223,6 +219,29 @@
 			this.tspbProgress.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
 			this.tspbProgress.Visible = false;
 			// 
+			// cmbMarkerWidths
+			// 
+			this.cmbMarkerWidths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.cmbMarkerWidths.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbMarkerWidths.Enabled = false;
+			this.cmbMarkerWidths.FormattingEnabled = true;
+			this.cmbMarkerWidths.Location = new System.Drawing.Point(117, 630);
+			this.cmbMarkerWidths.Margin = new System.Windows.Forms.Padding(3, 9, 3, 9);
+			this.cmbMarkerWidths.Name = "cmbMarkerWidths";
+			this.cmbMarkerWidths.Size = new System.Drawing.Size(150, 21);
+			this.cmbMarkerWidths.TabIndex = 9;
+			// 
+			// lblMarkerWidths
+			// 
+			this.lblMarkerWidths.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+			this.lblMarkerWidths.AutoSize = true;
+			this.lblMarkerWidths.Enabled = false;
+			this.lblMarkerWidths.Location = new System.Drawing.Point(12, 633);
+			this.lblMarkerWidths.Name = "lblMarkerWidths";
+			this.lblMarkerWidths.Size = new System.Drawing.Size(74, 13);
+			this.lblMarkerWidths.TabIndex = 8;
+			this.lblMarkerWidths.Text = "Marker Width:";
+			// 
 			// lbMessages
 			// 
 			this.lbMessages.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -234,6 +253,13 @@
 			this.lbMessages.Size = new System.Drawing.Size(208, 630);
 			this.lbMessages.TabIndex = 7;
 			// 
+			// enableCharacterOverridesToolStripMenuItem
+			// 
+			this.enableCharacterOverridesToolStripMenuItem.CheckOnClick = true;
+			this.enableCharacterOverridesToolStripMenuItem.Name = "enableCharacterOverridesToolStripMenuItem";
+			this.enableCharacterOverridesToolStripMenuItem.Size = new System.Drawing.Size(216, 22);
+			this.enableCharacterOverridesToolStripMenuItem.Text = "Enable Character &Overrides";
+			// 
 			// tvTextFiles
 			// 
 			this.tvTextFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -244,7 +270,7 @@
 			this.tvTextFiles.Location = new System.Drawing.Point(12, 27);
 			this.tvTextFiles.Name = "tvTextFiles";
 			this.tvTextFiles.ShowLines = false;
-			this.tvTextFiles.Size = new System.Drawing.Size(255, 591);
+			this.tvTextFiles.Size = new System.Drawing.Size(255, 552);
 			this.tvTextFiles.TabIndex = 2;
 			// 
 			// textEditorControl
@@ -254,6 +280,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.textEditorControl.Enabled = false;
 			this.textEditorControl.GameRenderer = null;
+			this.textEditorControl.LimitMarkerWidth = ((System.Collections.Generic.KeyValuePair<string, int>)(resources.GetObject("textEditorControl.LimitMarkerWidth")));
 			this.textEditorControl.Location = new System.Drawing.Point(487, 27);
 			this.textEditorControl.Name = "textEditorControl";
 			this.textEditorControl.OverridesEnabled = false;
@@ -266,11 +293,13 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(1234, 682);
+			this.Controls.Add(this.cmbMarkerWidths);
+			this.Controls.Add(this.lblMarkerWidths);
 			this.Controls.Add(this.lbMessages);
 			this.Controls.Add(this.statusStrip);
 			this.Controls.Add(this.menuStrip);
 			this.Controls.Add(this.cmbFont);
-			this.Controls.Add(this.lblPreviewFont);
+			this.Controls.Add(this.lblFont);
 			this.Controls.Add(this.tvTextFiles);
 			this.Controls.Add(this.textEditorControl);
 			this.DoubleBuffered = true;
@@ -290,7 +319,7 @@
 		#endregion
 		private Controls.TextEditorControl textEditorControl;
 		private Controls.TreeViewEx tvTextFiles;
-		private System.Windows.Forms.Label lblPreviewFont;
+		private System.Windows.Forms.Label lblFont;
 		private System.Windows.Forms.ComboBox cmbFont;
 		private System.Windows.Forms.MenuStrip menuStrip;
 		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
@@ -311,6 +340,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem saveAllToolStripMenuItem;
 		private Controls.ListBoxEx lbMessages;
+		private System.Windows.Forms.ComboBox cmbMarkerWidths;
+		private System.Windows.Forms.Label lblMarkerWidths;
 	}
 }
 

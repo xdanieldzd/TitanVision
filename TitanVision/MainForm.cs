@@ -160,6 +160,14 @@ namespace TitanVision
 				UpdateTextEditor();
 			};
 
+			cmbMarkerWidths.SelectedIndexChanged += (s, e) =>
+			{
+				UpdateTextEditor();
+			};
+			cmbMarkerWidths.DataSource = new BindingSource(new Dictionary<string, int>() { { "[None]", 0 } }.Concat(config.TextMarkerWidths.OrderBy(x => x.Key)), null);
+			cmbMarkerWidths.DisplayMember = "Key";
+			cmbMarkerWidths.ValueMember = "Value";
+
 			FormClosing += (s, e) =>
 			{
 				config.SerializeToFile(programConfigPath);
@@ -274,6 +282,9 @@ namespace TitanVision
 			if (cmbFont.SelectedItem != null)
 				textEditorControl.DataBindings.Add(nameof(textEditorControl.GameRenderer), cmbFont, nameof(cmbFont.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
 
+			if (cmbMarkerWidths.SelectedItem != null)
+				textEditorControl.DataBindings.Add(nameof(textEditorControl.LimitMarkerWidth), cmbMarkerWidths, nameof(cmbMarkerWidths.SelectedItem), false, DataSourceUpdateMode.OnPropertyChanged);
+
 			textEditorControl.DataBindings.Add(nameof(textEditorControl.OverridesEnabled), config, nameof(config.OverridesEnabled), false, DataSourceUpdateMode.OnPropertyChanged);
 
 			textEditorControl.Invalidate();
@@ -346,6 +357,11 @@ namespace TitanVision
 					currentFilePath = path;
 					currentTranslationFile = translation;
 					lbMessages.DataSource = currentTranslationFile.Entries;
+
+					var matchingMarkerWidths = config.TextMarkerWidths.Where(x => x.Key.StartsWith(Path.GetFileNameWithoutExtension(currentTranslationFile.RelativePath)));
+					if (matchingMarkerWidths != null)
+						cmbMarkerWidths.SelectedItem = matchingMarkerWidths.FirstOrDefault();
+
 					UpdateInfoLabel();
 				}
 			};
@@ -361,7 +377,10 @@ namespace TitanVision
 
 		private void EnableDisableUI(bool state)
 		{
-			saveToolStripMenuItem.Enabled = saveAllToolStripMenuItem.Enabled = tvTextFiles.Enabled = lbMessages.Enabled = cmbFont.Enabled = lblPreviewFont.Enabled = textEditorControl.Enabled = state;
+			saveToolStripMenuItem.Enabled = saveAllToolStripMenuItem.Enabled =
+				tvTextFiles.Enabled = lbMessages.Enabled =
+				cmbFont.Enabled = lblFont.Enabled = cmbMarkerWidths.Enabled = lblMarkerWidths.Enabled =
+				textEditorControl.Enabled = state;
 		}
 
 		private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
