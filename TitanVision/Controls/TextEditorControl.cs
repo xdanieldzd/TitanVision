@@ -80,7 +80,7 @@ namespace TitanVision.Controls
 
 		private void DrawLimitMarker(Graphics g, Panel panel, string text)
 		{
-			if (LimitMarkerWidth.Value != 0)
+			if (LimitMarkerWidth.Value != 0 && text != null && text != string.Empty)
 				g.DrawLine((GameRenderer.HasVariableLengthControlCodes(text) ? markerPenOrange : markerPenBlack), LimitMarkerWidth.Value, 0, LimitMarkerWidth.Value, panel.AutoScrollMinSize.Height);
 		}
 	}

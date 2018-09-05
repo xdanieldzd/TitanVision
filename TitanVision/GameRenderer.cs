@@ -213,7 +213,7 @@ namespace TitanVision
 
 			var strStripPage = str.Replace($"{controlCodeBegin}{controlCodePageBreak}{controlCodeEnd}{Environment.NewLine}", string.Empty);
 			var strLineCount = Regex.Matches(strStripPage, Environment.NewLine).Count;
-			return (Math.Max(1, strLineCount * cellSize.Height));
+			return (Math.Max(1, strLineCount) * cellSize.Height);
 		}
 
 		// this function is voodoo and I don't mean 3dfx
