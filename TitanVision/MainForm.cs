@@ -438,6 +438,10 @@ namespace TitanVision
 		private void MainForm_Shown(object sender, EventArgs e)
 		{
 			CreateRenderers();
+
+			var args = CommandLineTools.CreateArgs(Environment.CommandLine);
+			if (args.Length > 1 && Directory.Exists(args[1]))
+				OpenData(args[1]);
 		}
 
 		private void MainForm_PropertyChanged(object sender, PropertyChangedEventArgs e)

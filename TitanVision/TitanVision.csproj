@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandLineTools.cs" />
     <Compile Include="Controls\ListBoxEx.cs">
       <SubType>Component</SubType>
     </Compile>

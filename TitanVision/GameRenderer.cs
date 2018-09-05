@@ -59,7 +59,7 @@ namespace TitanVision
 			{ "Color", PostProcessColor },
 		};
 
-		static readonly string variableControlCodeRegexPattern = (@"\" + controlCodeBegin + @"((?!" + string.Join("|", postProcessFunctions.Select(x => x.Key + "\\b").Append(controlCodePageBreak + "\\b")) + @").*?)\" + controlCodeEnd);
+		static readonly string variableControlCodeRegexPattern = (@"\" + controlCodeBegin + @"((?!" + string.Join("|", preProcessFunctions.Select(x => x.Key + "\\b").Concat(postProcessFunctions.Select(x => x.Key + "\\b")).Append(controlCodePageBreak + "\\b")) + @").*?)\" + controlCodeEnd);
 
 		static ImageAttributes imageAttributes;
 		static float[][] colorMatrix;
